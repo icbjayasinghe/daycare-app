@@ -1,0 +1,125 @@
+/* Full width container for grid lists */
+mat-grid-list {
+  width: 100%;
+  padding: 20px 0;
+}
+
+/* Style header grid tile */
+mat-grid-tile-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  color: white;
+}
+
+mat-grid-tile-header h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 2.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Style grid tiles for content */
+mat-grid-tile {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+mat-grid-tile h1 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+mat-grid-tile p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Image styling */
+mat-grid-tile img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* SVG-specific styling for proper scaling */
+mat-grid-tile svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* App store badge sizing */
+mat-grid-tile img[alt*="apple"],
+mat-grid-tile img[alt*="Apple"],
+mat-grid-tile img[alt*="google"],
+mat-grid-tile img[alt*="Google"],
+mat-grid-tile img[src*="applestore"],
+mat-grid-tile img[src*="GooglePlay"] {
+  max-width: 150px;
+  height: auto;
+  margin: 10px;
+  display: inline-block;
+}
+
+/* Card styling for statistics */
+.count-card {
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.count-card mat-card-header {
+  width: 100%;
+}
+
+.count-card mat-card-title {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Number styling in cards */
+.count-card mat-card-content p {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #007bff;
+  letter-spacing: 2px;
+}
+
+/* Alternative: if you want different colors per card */
+.count-card:nth-child(1) mat-card-content p {
+  color: #c4a16c; /* Blue */
+}
+
+.count-card:nth-child(2) mat-card-content p {
+  color: #28a745; /* Green */
+}
+
+.count-card:nth-child(3) mat-card-content p {
+  color: #ffc107; /* Amber */
+}
+
+.center-header {
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically (if needed) */
+}
+
+.count-grid-list {
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically (if needed) */
+  background-color: thistle;
+}

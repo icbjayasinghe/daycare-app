@@ -1,0 +1,105 @@
+<h2 mat-dialog-title>Welcome to TipToe</h2>
+<mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Sign In As a Parent ">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="Ex. pat@example.com"
+          />
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Password</mat-label>
+          <input
+            type="password"
+            matInput
+            [formControl]="passwordFormControl"
+            placeholder="Enter your password"
+          />
+        </mat-form-field>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Register As a Parent">
+      <form class="example-form">
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>First name</mat-label>
+                <input matInput />
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Last Name</mat-label>
+                <input matInput />
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            matInput
+            [formControl]="emailFormControl"
+            placeholder="Ex. pat@example.com"
+          />
+        </mat-form-field>
+
+        <p>
+          <mat-form-field class="example-full-width">
+            <mat-label>Address</mat-label>
+            <textarea matInput placeholder="Ex. 100 Main St"></textarea>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Address 2</mat-label>
+            <textarea matInput></textarea>
+          </mat-form-field>
+        </p>
+
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="Ex. San Francisco" />
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>State</mat-label>
+                <input matInput placeholder="Ex. California" />
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Postal Code</mat-label>
+                <input
+                  matInput
+                  #postalCode
+                  maxlength="5"
+                  placeholder="Ex. 94105"
+                  value="94043"
+                />
+                <mat-hint align="end"
+                  >{{ postalCode.value.length }} / 5</mat-hint
+                >
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- <button matButton (click)="onNoClick()">No Thanks</button> -->
+  <!-- <button matButton [mat-dialog-close]="animal()" cdkFocusInitial>Ok</button> -->
+</mat-dialog-actions>

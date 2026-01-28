@@ -1,0 +1,66 @@
+mat-grid-tile {
+  background: lightblue;
+}
+
+/* Logo styling to ensure it fits nicely as a header logo */
+.logo-img {
+  height: 300px; /* typical AppBar/logo height */
+  width: auto;
+  display: block;
+  object-fit: contain;
+  padding-top: 20px;
+}
+
+/* Responsive: reduce logo size on small screens */
+@media (max-width: 600px) {
+  .logo-img {
+    height: 40px;
+  }
+}
+
+/* Optional: center the header content inside the mat-grid-tile-header */
+mat-grid-tile-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+/* Spacer used inside mat-toolbar to push elements to the right */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Keep section content vertically centered in the toolbar */
+header section,
+mat-toolbar section,
+section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+section {
+  display: flex;
+  align-items: center;
+}
+
+.example-label {
+  font-size: 14px;
+  margin: 0 16px 0 8px;
+  min-width: 120px;
+}
+
+.example-button-row {
+  max-width: 600px;
+}
+
+.example-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.example-flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

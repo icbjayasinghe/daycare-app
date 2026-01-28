@@ -1,0 +1,23 @@
+<mat-toolbar>
+  <span>
+    <img src="assets/img/skyhigh-tec.png" alt="Logo" class="logo-img" />
+  </span>
+
+  <!-- spacer pushes following content to the far right of the toolbar -->
+  <span class="spacer" aria-hidden="true"></span>
+
+  <section>
+    <div class="example-button-row">
+      <button mat-button>About</button>
+      <button mat-button>Contact</button>
+      <!-- <button mat-flat-button color="primary">Add your child</button> -->
+      <button mat-flat-button color="primary" [matMenuTriggerFor]="menu">
+        Become a member
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openParentDialog()">As a Parent</button>
+        <button mat-menu-item>As a Daycare</button>
+      </mat-menu>
+    </div>
+  </section>
+</mat-toolbar>
