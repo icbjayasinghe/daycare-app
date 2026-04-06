@@ -1,0 +1,300 @@
+openapi: 3.0.0
+info:
+  title: Swagger Daycare
+  description: |
+    This is a daycare server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://virtserver.swaggerhub.com/skyhigh-00b/DaycareAPI/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://daycare.swagger.io/v2
+tags:
+- name: daycare
+  description: Access to Daycare
+- name: parent
+  description: Operations about parent
+  externalDocs:
+    description: Find out more about our daycare
+    url: http://swagger.io
+paths:
+  /parent:
+    post:
+      tags:
+      - parent
+      summary: Create parent
+      description: This can only be done by the logged in parent.
+      operationId: createParent
+      requestBody:
+        description: Created parent object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Parent"
+        required: true
+      responses:
+        default:
+          description: successful operation
+  /parent/createWithArray:
+    post:
+      tags:
+      - parent
+      summary: Creates list of parents with given input array
+      operationId: createParentsWithArrayInput
+      requestBody:
+        $ref: "#/components/requestBodies/ParentArray"
+      responses:
+        default:
+          description: successful operation
+  /parent/createWithList:
+    post:
+      tags:
+      - parent
+      summary: Creates list of parents with given input array
+      operationId: createParentsWithListInput
+      requestBody:
+        $ref: "#/components/requestBodies/ParentArray"
+      responses:
+        default:
+          description: successful operation
+  /parent/login:
+    get:
+      tags:
+      - parent
+      summary: Logs parent into the system
+      operationId: loginParent
+      parameters:
+      - name: parentname
+        in: query
+        description: The parent name for login
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: The password for login in clear text
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the parent
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        "400":
+          description: Invalid parentname/password supplied
+  /parent/logout:
+    get:
+      tags:
+      - parent
+      summary: Logs out current logged in parent session
+      operationId: logoutParent
+      responses:
+        default:
+          description: successful operation
+  /parent/{parentname}:
+    get:
+      tags:
+      - parent
+      summary: Get parent by parent name
+      operationId: getParentByName
+      parameters:
+      - name: parentname
+        in: path
+        description: The name that needs to be fetched. Use parent1 for testing.
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Parent"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Parent"
+        "400":
+          description: Invalid parentname supplied
+        "404":
+          description: Parent not found
+    put:
+      tags:
+      - parent
+      summary: Updated parent
+      description: This can only be done by the logged in parent.
+      operationId: updateParent
+      parameters:
+      - name: parentname
+        in: path
+        description: name that need to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Updated parent object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Parent"
+        required: true
+      responses:
+        "400":
+          description: Invalid parent supplied
+        "404":
+          description: Parent not found
+    delete:
+      tags:
+      - parent
+      summary: Delete parent
+      description: This can only be done by the logged in parent.
+      operationId: deleteParent
+      parameters:
+      - name: parentname
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid parentname supplied
+        "404":
+          description: Parent not found
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: Category
+    Parent:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        parentname:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        parentStatus:
+          type: integer
+          description: Parent Status
+          format: int32
+        address:
+          $ref: "#/components/schemas/Address"
+      xml:
+        name: Parent
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+      description: Address model
+    Schema:
+      title: Child
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+          x-stoplight:
+            id: 5jgf9il2bnqyr
+        lastName:
+          type: string
+          x-stoplight:
+            id: 6h9e65ovml6y5
+        dob:
+          type: string
+          x-stoplight:
+            id: mq68bbd8e6itx
+        sex:
+          type: string
+          x-stoplight:
+            id: pg64mdmyc60m3
+      description: ""
+  requestBodies:
+    ParentArray:
+      description: List of parent object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Parent"
+      required: true
+  securitySchemes:
+    daycare_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://daycare.swagger.io/oauth/dialog
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

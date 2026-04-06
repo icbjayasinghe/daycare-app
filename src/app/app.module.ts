@@ -8,6 +8,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PagesComponent } from './pages/pages.component';
 import { HeaderComponent } from './static/header/header.component';
 import { FooterComponent } from './static/footer/footer.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +19,7 @@ import { FooterComponent } from './static/footer/footer.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

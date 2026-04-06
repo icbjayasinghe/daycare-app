@@ -25,19 +25,47 @@
     </mat-tab>
 
     <mat-tab label="Register As a Parent">
-      <form class="example-form">
+      <form
+        [formGroup]="signupForm"
+        (ngSubmit)="onSubmit()"
+        class="example-form"
+      >
         <table class="example-full-width" cellspacing="0">
           <tr>
             <td>
               <mat-form-field class="example-full-width">
                 <mat-label>First name</mat-label>
-                <input matInput />
+                <input
+                  matInput
+                  formControlName="firstName"
+                  placeholder="Enter first name"
+                />
+                <mat-error
+                  *ngIf="
+                    signupForm.get('firstName')?.invalid &&
+                    signupForm.get('firstName')?.touched
+                  "
+                >
+                  First name is required and must be at least 2 characters.
+                </mat-error>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
                 <mat-label>Last Name</mat-label>
-                <input matInput />
+                <input
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Enter last name"
+                />
+                <mat-error
+                  *ngIf="
+                    signupForm.get('lastName')?.invalid &&
+                    signupForm.get('lastName')?.touched
+                  "
+                >
+                  Last name is required and must be at least 2 characters.
+                </mat-error>
               </mat-form-field>
             </td>
           </tr>
@@ -48,19 +76,36 @@
           <input
             type="email"
             matInput
-            [formControl]="emailFormControl"
-            placeholder="Ex. pat@example.com"
+            formControlName="email"
+            type="email"
+            placeholder="Enter email"
           />
+          <mat-error
+            *ngIf="
+              signupForm.get('email')?.invalid &&
+              signupForm.get('email')?.touched
+            "
+          >
+            Please enter a valid email.
+          </mat-error>
         </mat-form-field>
 
         <p>
           <mat-form-field class="example-full-width">
             <mat-label>Address</mat-label>
-            <textarea matInput placeholder="Ex. 100 Main St"></textarea>
+            <textarea
+              matInput
+              formControlName="address"
+              placeholder="Ex. 100 Main St"
+            ></textarea>
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <mat-label>Address 2</mat-label>
-            <textarea matInput></textarea>
+            <textarea
+              matInput
+              formControlName="address2"
+              placeholder="Ex. Apt 1"
+            ></textarea>
           </mat-form-field>
         </p>
 
@@ -69,13 +114,21 @@
             <td>
               <mat-form-field class="example-full-width">
                 <mat-label>City</mat-label>
-                <input matInput placeholder="Ex. San Francisco" />
+                <input
+                  matInput
+                  formControlName="city"
+                  placeholder="Ex. San Francisco"
+                />
               </mat-form-field>
             </td>
             <td>
               <mat-form-field class="example-full-width">
                 <mat-label>State</mat-label>
-                <input matInput placeholder="Ex. California" />
+                <input
+                  matInput
+                  formControlName="state"
+                  placeholder="Ex. California"
+                />
               </mat-form-field>
             </td>
             <td>
@@ -83,18 +136,26 @@
                 <mat-label>Postal Code</mat-label>
                 <input
                   matInput
+                  formControlName="postalCode"
                   #postalCode
-                  maxlength="5"
+                  maxlength="6"
                   placeholder="Ex. 94105"
-                  value="94043"
                 />
                 <mat-hint align="end"
-                  >{{ postalCode.value.length }} / 5</mat-hint
+                  >{{ postalCode.value.length }} / 6</mat-hint
                 >
               </mat-form-field>
             </td>
           </tr>
         </table>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="signupForm.invalid"
+        >
+          Register
+        </button>
       </form>
     </mat-tab>
   </mat-tab-group>
