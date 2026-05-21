@@ -77,7 +77,6 @@
             type="email"
             matInput
             formControlName="email"
-            type="email"
             placeholder="Enter email"
           />
           <mat-error
@@ -90,21 +89,63 @@
           </mat-error>
         </mat-form-field>
 
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Phone</mat-label>
+                <input
+                  matInput
+                  formControlName="phone"
+                  placeholder="Ex. 1234567890"
+                />
+                <mat-error
+                  *ngIf="
+                    signupForm.get('phone')?.invalid &&
+                    signupForm.get('phone')?.touched
+                  "
+                >
+                  Phone is required and must be 10 digits.
+                </mat-error>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Password</mat-label>
+                <input
+                  type="password"
+                  matInput
+                  formControlName="password"
+                  placeholder="Enter password"
+                />
+                <mat-error
+                  *ngIf="
+                    signupForm.get('password')?.invalid &&
+                    signupForm.get('password')?.touched
+                  "
+                >
+                  Password is required and must be at least 8 characters.
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
         <p>
+          <mat-form-field class="example-full-width">
+            <mat-label>Apartment</mat-label>
+            <textarea
+              matInput
+              formControlName="apartment"
+              placeholder="Ex. 1307"
+            ></textarea>
+          </mat-form-field>
           <mat-form-field class="example-full-width">
             <mat-label>Address</mat-label>
             <textarea
               matInput
               formControlName="address"
-              placeholder="Ex. 100 Main St"
-            ></textarea>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <mat-label>Address 2</mat-label>
-            <textarea
-              matInput
-              formControlName="address2"
-              placeholder="Ex. Apt 1"
+              placeholder="Ex. 1094 Evergreen Terrace"
             ></textarea>
           </mat-form-field>
         </p>
@@ -123,11 +164,11 @@
             </td>
             <td>
               <mat-form-field class="example-full-width">
-                <mat-label>State</mat-label>
+                <mat-label>Province</mat-label>
                 <input
                   matInput
                   formControlName="state"
-                  placeholder="Ex. California"
+                  placeholder="Ex. Nova Scotia"
                 />
               </mat-form-field>
             </td>
