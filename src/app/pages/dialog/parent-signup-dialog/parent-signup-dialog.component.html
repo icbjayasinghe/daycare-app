@@ -2,13 +2,18 @@
 <mat-dialog-content>
   <mat-tab-group>
     <mat-tab label="Sign In As a Parent ">
-      <form class="example-form">
+      <form
+        class="example-form"
+        [formGroup]="loginForm"
+        (ngSubmit)="onLogin()"
+        class="example-form"
+      >
         <mat-form-field class="example-full-width">
           <mat-label>Email</mat-label>
           <input
             type="email"
             matInput
-            [formControl]="emailFormControl"
+            formControlName="email"
             placeholder="Ex. pat@example.com"
           />
         </mat-form-field>
@@ -17,10 +22,22 @@
           <input
             type="password"
             matInput
-            [formControl]="passwordFormControl"
+            formControlName="password"
             placeholder="Enter your password"
           />
         </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="loginForm.invalid || loading"
+        >
+          {{ loading ? "Signing in..." : "Sign In" }}
+        </button>
+
+        <mat-error *ngIf="loginError">
+          {{ loginError }}
+        </mat-error>
       </form>
     </mat-tab>
 
