@@ -8,16 +8,48 @@
 
   <section>
     <div class="example-button-row">
-      <button mat-button>About</button>
-      <button mat-button>Contact</button>
-      <!-- <button mat-flat-button color="primary">Add your child</button> -->
-      <button mat-flat-button color="primary" [matMenuTriggerFor]="menu">
-        Become a member
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openParentDialog()">As a Parent</button>
-        <button mat-menu-item>As a Daycare</button>
-      </mat-menu>
+      <ng-container
+        *ngIf="authService.parentAuthenticated$ | async; else membershipMenu"
+      >
+        <span class="account-area">
+          <button
+            mat-icon-button
+            class="avatar-button"
+            aria-label="Open account menu"
+            [matMenuTriggerFor]="accountMenu"
+          >
+            <mat-icon>account_circle</mat-icon>
+          </button>
+          <ng-container *ngIf="authService.parentProfile$ | async as profile">
+            <span class="account-profile">
+              <span class="account-name"
+                >{{ profile.givenName }} {{ profile.familyName }}</span
+              >
+              <span class="account-role">{{ profile.role }}</span>
+            </span>
+          </ng-container>
+        </span>
+        <mat-menu #accountMenu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+
+      <ng-template #membershipMenu>
+        <button mat-button>About</button>
+        <button mat-button>Contact</button>
+        <button mat-flat-button color="primary" [matMenuTriggerFor]="menu">
+          Become a member
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="openParentDialog()">
+            As a Parent
+          </button>
+          <button mat-menu-item>As a Daycare</button>
+        </mat-menu>
+      </ng-template>
     </div>
   </section>
 </mat-toolbar>

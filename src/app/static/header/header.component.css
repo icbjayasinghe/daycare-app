@@ -59,6 +59,42 @@ section {
   margin: 8px 8px 8px 0;
 }
 
+.avatar-button {
+  width: 44px;
+  height: 44px;
+  color: #315b8a;
+  flex: 0 0 auto;
+}
+
+.avatar-button mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+}
+
+.account-profile {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  margin-left: 4px;
+  margin-right: 12px;
+}
+
+.account-area {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.account-name {
+  font-weight: 500;
+}
+
+.account-role {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
 .example-flex-container {
   display: flex;
   justify-content: space-between;
