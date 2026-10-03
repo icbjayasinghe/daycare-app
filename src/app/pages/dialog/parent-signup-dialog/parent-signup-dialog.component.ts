@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Optional } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormControl,
@@ -25,6 +27,8 @@ export class ParentSignupDialogComponent {
     private fb: FormBuilder,
     private authService: AuthServiceService,
     private parentService: ParentService,
+    private router: Router,
+    @Optional() private dialogRef?: MatDialogRef<ParentSignupDialogComponent>,
   ) {
     this.signupForm = this.fb.group(
       {
@@ -65,12 +69,17 @@ export class ParentSignupDialogComponent {
 
     const { email, password } = this.loginForm.getRawValue();
 
-    console.log('Login Form Data:', { email, password });
-
     this.authService.login(email!, password!).subscribe({
-      next: () => {
+      next: (response) => {
+        if (!this.authService.establishParentSession(response)) {
+          this.loading = false;
+          this.loginError = 'This account does not have parent access.';
+          return;
+        }
+
         this.loading = false;
-        // close dialog / navigate to parent dashboard
+        this.dialogRef?.close();
+        this.router.navigate(['/pages/parent/dashboard']);
       },
       error: (error) => {
         this.loading = false;
@@ -88,8 +97,6 @@ export class ParentSignupDialogComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      // console.log('Form Data:', this.signupForm.value);
-
       this.registerParent();
       // Handle form submission (e.g., API call)
     }

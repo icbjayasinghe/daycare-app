@@ -10,7 +10,8 @@ import { FooterComponent } from '../static/footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParentSignupDialogComponent } from './dialog/parent-signup-dialog/parent-signup-dialog.component';
-import { MaterialModule } from '../shared/material.module';    
+import { MaterialModule } from '../shared/material.module';
+import { ParentDashboardComponent } from './parent/parent-dashboard/parent-dashboard.component';    
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MaterialModule } from '../shared/material.module';
     FooterComponent,
     HomeComponent,
     ParentSignupDialogComponent,
+    ParentDashboardComponent,
   ],
   imports: [
     CommonModule,
