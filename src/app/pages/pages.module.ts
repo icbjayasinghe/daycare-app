@@ -11,8 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParentSignupDialogComponent } from './dialog/parent-signup-dialog/parent-signup-dialog.component';
 import { MaterialModule } from '../shared/material.module';
-import { ParentDashboardComponent } from './parent/parent-dashboard/parent-dashboard.component';    
-
+import { ParentDashboardComponent } from './parent/pages/parent-dashboard/parent-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +30,6 @@ import { ParentDashboardComponent } from './parent/parent-dashboard/parent-dashb
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-  ]
+  ],
 })
-export class PagesModule { }
+export class PagesModule {}
