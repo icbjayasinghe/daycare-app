@@ -1,0 +1,52 @@
+.dialog-content {
+	width: min(720px, 82vw);
+	max-height: 75vh;
+	padding: 0 8px 12px;
+}
+
+.dialog-form {
+	display: block;
+	padding: 20px 12px 8px;
+}
+
+.tab-intro {
+	margin: 0 0 20px;
+	color: #596579;
+}
+
+.form-section + .form-section {
+	margin-top: 12px;
+}
+
+.form-section h3 {
+	margin: 8px 0 14px;
+	color: #27364b;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.form-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 16px;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.submit-button {
+	min-height: 44px;
+	margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+	.dialog-content {
+		width: auto;
+		max-width: 100%;
+	}
+
+	.form-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

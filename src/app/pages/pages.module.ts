@@ -11,7 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParentSignupDialogComponent } from './dialog/parent-signup-dialog/parent-signup-dialog.component';
 import { MaterialModule } from '../shared/material.module';
-import { ParentDashboardComponent } from './parent/pages/parent-dashboard/parent-dashboard.component';
+import { DaycareSignupDialogComponent } from './dialog/daycare-signup-dialog/daycare-signup-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { ParentDashboardComponent } from './parent/pages/parent-dashboard/parent
     FooterComponent,
     HomeComponent,
     ParentSignupDialogComponent,
-    ParentDashboardComponent,
+    DaycareSignupDialogComponent,
   ],
   imports: [
     CommonModule,
