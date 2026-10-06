@@ -1,6 +1,8 @@
 import { Component, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DaycareDto } from 'src/app/models/daycare.model';
+import { DaycareService } from 'src/app/services/daycare.service';
 
 @Component({
   selector: 'app-daycare-signup-dialog',
@@ -13,6 +15,7 @@ export class DaycareSignupDialogComponent {
 
   constructor(
     private readonly fb: FormBuilder,
+    private daycareService: DaycareService,
     @Optional()
     private readonly dialogRef?: MatDialogRef<DaycareSignupDialogComponent>,
   ) {
@@ -64,5 +67,26 @@ export class DaycareSignupDialogComponent {
       owners: [{ ...formValue.owners, userType: 0 }],
       address: formValue.address,
     });
+
+    const daycareData: DaycareDto = {
+      name: formValue.name,
+      telephone: formValue.telephone,
+      owners: [{ ...formValue.owners, userType: 0 }],
+      address: formValue.address,
+    };
+
+    console.log('Registering daycare:', daycareData);
+
+    this.daycareService.registerDaycare(daycareData).subscribe(
+      (response: any) => {
+        console.log('Parent registered successfully:', response);
+        // Handle successful registration (e.g., show a success message, close dialog)
+      },
+
+      // error => {
+      //   console.error('Error registering parent:', error);
+      //   // Handle registration error (e.g., show an error message)
+      // }
+    );
   }
 }

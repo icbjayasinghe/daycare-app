@@ -6,29 +6,25 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ParentService {
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   private apiUrl = 'api/parent'; // Replace with your actual API endpoint
 
-  registerParent(parentData: ParentDto): Observable<ParentDto> | any{
+  registerParent(parentData: ParentDto): Observable<ParentDto> | any {
     const url = `${environment.baseUrl}/api/parent`;
 
     // const httpOptions = {
     //   headers: new HttpHeaders({
     //     'Content-Type':  'application/json',
-        
+
     //   })
     // };
 
     // return this.http.get<InventoryGrpItem[]>(url, httpOptions);
-    console.log('parentData:', parentData);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }); 
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(`${url}`, parentData, { headers });
   }
