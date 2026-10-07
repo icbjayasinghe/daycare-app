@@ -10,6 +10,14 @@ export interface ParentProfile {
   role: string;
 }
 
+export type UserRole = 'PARENT' | 'ADMIN' | 'PROVIDER';
+
+const ROLE_HOME_ROUTES: Record<UserRole, string> = {
+  PARENT: '/pages/parent/dashboard',
+  ADMIN: '/pages/admin/dashboard',
+  PROVIDER: '/pages/daycare/dashboard',
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -37,24 +45,59 @@ export class AuthServiceService {
   }
 
   establishParentSession(response: LoginResponse): boolean {
+    if (!this.establishSession(response) || !this.hasRole('PARENT')) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  establishDaycareSession(response: LoginResponse): boolean {
+    if (!this.establishSession(response) || !this.hasRole('PROVIDER')) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  establishSession(response: LoginResponse): boolean {
     localStorage.removeItem(this.tokenKey);
-    const profile = response?.accessToken
-      ? this.readParentProfile(response.accessToken)
-      : null;
-    if (!profile) {
+    const token = response?.accessToken;
+    const roles = token ? this.readRoles(token) : [];
+    if (!token || !roles.length) {
       this.clearSessionState();
       return false;
     }
 
-    localStorage.setItem(this.tokenKey, response.accessToken);
-    this.parentProfileSubject.next(profile);
-    this.parentAuthenticatedSubject.next(true);
+    localStorage.setItem(this.tokenKey, token);
+    this.refreshSessionState();
     return true;
   }
 
   hasParentAccess(): boolean {
+    return this.hasRole('PARENT');
+  }
+
+  hasAuthenticatedAccess(): boolean {
+    return this.getRoles().length > 0;
+  }
+
+  hasRole(role: UserRole): boolean {
+    return this.getRoles().includes(role);
+  }
+
+  getRoles(): UserRole[] {
     const token = localStorage.getItem(this.tokenKey);
-    return !!token && !!this.readParentProfile(token);
+    return token ? this.readRoles(token) : [];
+  }
+
+  getRoleHomeRoute(): string | null {
+    const roles = this.getRoles();
+    const priority: UserRole[] = ['ADMIN', 'PROVIDER', 'PARENT'];
+    const role = priority.find((candidate) => roles.includes(candidate));
+    return role ? ROLE_HOME_ROUTES[role] : null;
   }
 
   logout(): void {
@@ -64,10 +107,13 @@ export class AuthServiceService {
 
   private refreshSessionState(): void {
     const token = localStorage.getItem(this.tokenKey);
-    const profile = token ? this.readParentProfile(token) : null;
+    const roles = token ? this.readRoles(token) : [];
+    const profile = roles.includes('PARENT')
+      ? this.readParentProfile(token!)
+      : null;
     this.parentProfileSubject.next(profile);
     this.parentAuthenticatedSubject.next(!!profile);
-    if (token && !profile) {
+    if (token && !roles.length) {
       localStorage.removeItem(this.tokenKey);
     }
   }
@@ -79,45 +125,63 @@ export class AuthServiceService {
 
   private readParentProfile(token: string): ParentProfile | null {
     try {
+      const payload = this.readTokenPayload(token);
+      if (!payload || !this.readRoles(token).includes('PARENT')) {
+        return null;
+      }
+
+      return {
+        givenName:
+          typeof payload.given_name === 'string' ? payload.given_name : '',
+        familyName:
+          typeof payload.family_name === 'string' ? payload.family_name : '',
+        role: 'PARENT',
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  private readRoles(token: string): UserRole[] {
+    const payload = this.readTokenPayload(token);
+    if (!payload) {
+      return [];
+    }
+
+    const roleClaims: unknown[] = [
+      payload.role,
+      payload.roles,
+      payload.authorities,
+      payload.realm_access?.roles,
+    ];
+    const roles = roleClaims.reduce<unknown[]>(
+      (all, claim) => all.concat(Array.isArray(claim) ? claim : [claim]),
+      [],
+    );
+    const recognizedRoles: UserRole[] = ['PARENT', 'ADMIN', 'PROVIDER'];
+    return recognizedRoles.filter((recognizedRole) =>
+      roles.some(
+        (role) =>
+          typeof role === 'string' &&
+          role.toUpperCase().replace(/^ROLE_/, '') === recognizedRole,
+      ),
+    );
+  }
+
+  private readTokenPayload(token: string): any | null {
+    try {
       const parts = token.split('.');
       if (parts.length !== 3) {
         return null;
       }
+
       const encodedPayload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
       const payload = JSON.parse(
         atob(
           encodedPayload + '='.repeat((4 - (encodedPayload.length % 4)) % 4),
         ),
       );
-      if (payload.exp && payload.exp * 1000 <= Date.now()) {
-        return null;
-      }
-
-      const roleClaims = [
-        payload.role,
-        payload.roles,
-        payload.authorities,
-        payload.realm_access?.roles,
-      ];
-      const roles = roleClaims.reduce(
-        (all: unknown[], claim: unknown) =>
-          all.concat(Array.isArray(claim) ? claim : [claim]),
-        [],
-      );
-      const hasParentRole = roles.some(
-        (role) =>
-          typeof role === 'string' &&
-          role.toUpperCase().replace(/^ROLE_/, '') === 'PARENT',
-      );
-      if (!hasParentRole) {
-        return null;
-      }
-
-      return {
-        givenName: typeof payload.given_name === 'string' ? payload.given_name : '',
-        familyName: typeof payload.family_name === 'string' ? payload.family_name : '',
-        role: 'PARENT',
-      };
+      return payload.exp && payload.exp * 1000 <= Date.now() ? null : payload;
     } catch {
       return null;
     }

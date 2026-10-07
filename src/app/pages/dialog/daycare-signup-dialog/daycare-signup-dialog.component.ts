@@ -2,7 +2,9 @@ import { Component, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DaycareDto } from 'src/app/models/daycare.model';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { DaycareService } from 'src/app/services/daycare.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-daycare-signup-dialog',
@@ -12,10 +14,14 @@ import { DaycareService } from 'src/app/services/daycare.service';
 export class DaycareSignupDialogComponent {
   readonly loginForm: FormGroup;
   readonly registerForm: FormGroup;
+  loading = false;
+  loginError = '';
 
   constructor(
     private readonly fb: FormBuilder,
     private daycareService: DaycareService,
+    private authService: AuthServiceService,
+    private router: Router,
     @Optional()
     private readonly dialogRef?: MatDialogRef<DaycareSignupDialogComponent>,
   ) {
@@ -50,8 +56,28 @@ export class DaycareSignupDialogComponent {
       this.loginForm.markAllAsTouched();
       return;
     }
+    this.loading = true;
+    this.loginError = '';
 
-    this.dialogRef?.close(this.loginForm.getRawValue());
+    const { email, password } = this.loginForm.getRawValue();
+
+    this.authService.login(email!, password!).subscribe({
+      next: (response) => {
+        if (!this.authService.establishDaycareSession(response)) {
+          this.loading = false;
+          this.loginError = 'This account does not have daycare access.';
+          return;
+        }
+
+        this.loading = false;
+        this.dialogRef?.close();
+        this.router.navigate(['/pages/admin/dashboard']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.loginError = 'Invalid email or password.';
+      },
+    });
   }
 
   onRegister(): void {

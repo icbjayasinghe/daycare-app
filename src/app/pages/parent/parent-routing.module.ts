@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ParentLayoutComponent } from './parent-layout/parent-layout.component';
 import { ParentDashboardComponent } from './pages/parent-dashboard/parent-dashboard.component';
-import { ParentAuthGuard } from 'src/app/guards/parent-auth.guard';
+import AuthGuard from 'src/app/guards/auth.guard';
 import { ParentDaycaresComponent } from './pages/parent-daycares/parent-daycares.component';
 
 const routes: Routes = [
@@ -10,15 +10,18 @@ const routes: Routes = [
     path: '',
     component: ParentLayoutComponent,
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
         component: ParentDashboardComponent,
-        canActivate: [ParentAuthGuard],
+        canActivate: [AuthGuard],
+        data: { roles: ['PARENT'] },
       },
       {
         path: 'daycares',
         component: ParentDaycaresComponent,
-        canActivate: [ParentAuthGuard],
+        canActivate: [AuthGuard],
+        data: { roles: ['PARENT'] },
       },
     ],
   },

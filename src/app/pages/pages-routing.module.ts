@@ -4,7 +4,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { ParentDashboardComponent } from './parent/pages/parent-dashboard/parent-dashboard.component';
-import { ParentAuthGuard } from '../guards/parent-auth.guard';
+import AuthGuard from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +17,16 @@ const routes: Routes = [
         path: 'parent',
         loadChildren: () =>
           import('./parent/parent.module').then((m) => m.ParentModule),
+      },
+      {
+        path: 'daycare',
+        loadChildren: () =>
+          import('./daycare/daycare.module').then((m) => m.DaycareModule),
+      },
+      {
+        path: 'admin',
+        loadChildren: () =>
+          import('./admin/admin.module').then((m) => m.AdminModule),
       },
       // {
       //   path: 'parent/dashboard',
