@@ -10,6 +10,8 @@ export interface ParentProfile {
   role: string;
 }
 
+export interface AccountProfile extends ParentProfile {}
+
 export type UserRole = 'PARENT' | 'ADMIN' | 'PROVIDER';
 
 const ROLE_HOME_ROUTES: Record<UserRole, string> = {
@@ -31,6 +33,12 @@ export class AuthServiceService {
   private readonly parentProfileSubject =
     new BehaviorSubject<ParentProfile | null>(null);
   readonly parentProfile$ = this.parentProfileSubject.asObservable();
+  private readonly authenticatedSubject = new BehaviorSubject<boolean>(false);
+  readonly authenticated$ = this.authenticatedSubject.asObservable();
+  private readonly profileSubject = new BehaviorSubject<AccountProfile | null>(
+    null,
+  );
+  readonly profile$ = this.profileSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.refreshSessionState();
@@ -108,19 +116,51 @@ export class AuthServiceService {
   private refreshSessionState(): void {
     const token = localStorage.getItem(this.tokenKey);
     const roles = token ? this.readRoles(token) : [];
-    const profile = roles.includes('PARENT')
-      ? this.readParentProfile(token!)
-      : null;
-    this.parentProfileSubject.next(profile);
-    this.parentAuthenticatedSubject.next(!!profile);
+    const profile = token ? this.readAccountProfile(token, roles) : null;
+    const parentProfile =
+      token && roles.includes('PARENT') ? this.readParentProfile(token) : null;
+    this.profileSubject.next(profile);
+    this.authenticatedSubject.next(!!profile);
+    this.parentProfileSubject.next(parentProfile);
+    this.parentAuthenticatedSubject.next(!!parentProfile);
     if (token && !roles.length) {
       localStorage.removeItem(this.tokenKey);
     }
   }
 
   private clearSessionState(): void {
+    this.profileSubject.next(null);
+    this.authenticatedSubject.next(false);
     this.parentProfileSubject.next(null);
     this.parentAuthenticatedSubject.next(false);
+  }
+
+  private readAccountProfile(
+    token: string,
+    roles: UserRole[],
+  ): AccountProfile | null {
+    const payload = this.readTokenPayload(token);
+    if (!payload || !roles.length) {
+      return null;
+    }
+
+    const rolePriority: UserRole[] = ['ADMIN', 'PROVIDER', 'PARENT'];
+    const role = rolePriority.find((candidate) => roles.includes(candidate));
+    if (!role) {
+      return null;
+    }
+
+    const fullName = typeof payload.name === 'string' ? payload.name.trim() : '';
+    const [firstFromName = '', ...lastNameParts] = fullName.split(/\s+/);
+    return {
+      givenName:
+        payload.given_name ?? payload.givenName ?? payload.firstName ??
+        firstFromName ?? payload.preferred_username ?? '',
+      familyName:
+        payload.family_name ?? payload.familyName ?? payload.lastName ??
+        lastNameParts.join(' '),
+      role,
+    };
   }
 
   private readParentProfile(token: string): ParentProfile | null {

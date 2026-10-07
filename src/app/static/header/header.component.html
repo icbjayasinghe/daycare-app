@@ -9,7 +9,7 @@
   <section>
     <div class="example-button-row">
       <ng-container
-        *ngIf="authService.parentAuthenticated$ | async; else membershipMenu"
+        *ngIf="authService.authenticated$ | async; else membershipMenu"
       >
         <span class="account-area">
           <button
@@ -20,7 +20,7 @@
           >
             <mat-icon>account_circle</mat-icon>
           </button>
-          <ng-container *ngIf="authService.parentProfile$ | async as profile">
+          <ng-container *ngIf="authService.profile$ | async as profile">
             <span class="account-profile">
               <span class="account-name"
                 >{{ profile.givenName }} {{ profile.familyName }}</span
