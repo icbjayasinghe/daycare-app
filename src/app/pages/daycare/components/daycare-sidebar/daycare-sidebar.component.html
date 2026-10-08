@@ -1,1 +1,39 @@
-<p>daycare-sidebar works!</p>
+<aside class="daycare-sidebar">
+  <div class="sidebar-header">
+    <h2>TipToe</h2>
+    <span>Daycare Portal</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a
+      routerLink="/pages/daycare/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <span class="icon">🏠</span>
+      <span>Dashboard</span>
+    </a>
+
+    <a routerLink="/pages/daycare/daycares" routerLinkActive="active">
+      <span class="icon">🏫</span>
+      <span>Wait List</span>
+    </a>
+
+    <a routerLink="/pages/daycare/wait-list" routerLinkActive="active">
+      <span class="icon">👧</span>
+      <span>Current Students</span>
+    </a>
+
+    <a routerLink="/pages/daycare/profile" routerLinkActive="active">
+      <span class="icon">👤</span>
+      <span>Daycare Profile</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button type="button" class="logout-btn">
+      <span class="icon">↪</span>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>
