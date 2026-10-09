@@ -71,7 +71,7 @@ export class ParentSignupDialogComponent {
 
     this.authService.login(email!, password!).subscribe({
       next: (response) => {
-        if (!this.authService.establishParentSession(response)) {
+        if (!this.authService.establishParentSession(response, email!)) {
           this.loading = false;
           this.loginError = 'This account does not have parent access.';
           return;

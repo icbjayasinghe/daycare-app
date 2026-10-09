@@ -63,7 +63,7 @@ export class DaycareSignupDialogComponent {
 
     this.authService.login(email!, password!).subscribe({
       next: (response) => {
-        if (!this.authService.establishDaycareSession(response)) {
+        if (!this.authService.establishDaycareSession(response, email!)) {
           this.loading = false;
           this.loginError = 'This account does not have daycare access.';
           return;

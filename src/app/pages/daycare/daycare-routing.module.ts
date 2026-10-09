@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DaycareLayoutComponent } from './daycare-layout/daycare-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile.component';
 import AuthGuard from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
@@ -15,6 +16,12 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'profile',
+        component: DaycareProfileComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },

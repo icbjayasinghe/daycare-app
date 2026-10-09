@@ -1,0 +1,177 @@
+<main class="profile-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">DAYCARE MANAGEMENT</p>
+      <h1>Daycare profile</h1>
+      <p class="page-description">
+        Contact and location details for your daycare.
+      </p>
+    </div>
+    <div class="header-actions" *ngIf="!loading && profile">
+      <button
+        *ngIf="!isEditing"
+        type="button"
+        class="button button-primary"
+        (click)="startEditing()"
+      >
+        Edit profile
+      </button>
+      <ng-container *ngIf="isEditing">
+        <button
+          type="button"
+          class="button button-secondary"
+          [disabled]="saving"
+          (click)="cancelEditing()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="button button-primary"
+          form="daycare-profile-form"
+          [disabled]="saving"
+        >
+          {{ saving ? "Saving..." : "Save changes" }}
+        </button>
+      </ng-container>
+    </div>
+  </header>
+
+  <p class="feedback feedback-error" *ngIf="errorMessage" role="alert">
+    {{ errorMessage }}
+    <button
+      *ngIf="!profile"
+      type="button"
+      class="text-button"
+      (click)="loadProfile()"
+    >
+      Retry
+    </button>
+  </p>
+  <p class="feedback feedback-success" *ngIf="successMessage" role="status">
+    {{ successMessage }}
+  </p>
+
+  <div class="loading-state" *ngIf="loading" aria-live="polite">
+    Loading daycare profile...
+  </div>
+
+  <form
+    *ngIf="!loading && profile"
+    id="daycare-profile-form"
+    [formGroup]="profileForm"
+    (ngSubmit)="saveProfile()"
+  >
+    <section class="profile-section">
+      <div class="section-heading">
+        <div>
+          <h2>Daycare details</h2>
+          <p>Public contact information</p>
+        </div>
+      </div>
+      <div class="field-grid">
+        <label class="field">
+          <span>Daycare name</span>
+          <input formControlName="name" [readonly]="!isEditing" />
+          <small
+            *ngIf="isEditing && profileForm.get('name')?.hasError('required')"
+          >
+            Name is required.
+          </small>
+        </label>
+        <label class="field">
+          <span>Telephone</span>
+          <input
+            type="tel"
+            formControlName="telephone"
+            [readonly]="!isEditing"
+          />
+          <small
+            *ngIf="
+              isEditing && profileForm.get('telephone')?.hasError('required')
+            "
+          >
+            Telephone is required.
+          </small>
+        </label>
+      </div>
+    </section>
+
+    <section class="profile-section" formArrayName="owners">
+      <div class="section-heading">
+        <div>
+          <h2>Owners</h2>
+          <p>Primary account contacts</p>
+        </div>
+      </div>
+      <div
+        class="owner-block"
+        *ngFor="let owner of owners.controls; let index = index"
+        [formGroupName]="index"
+      >
+        <h3>Owner {{ index + 1 }}</h3>
+        <div class="field-grid">
+          <label class="field">
+            <span>First name</span>
+            <input formControlName="firstName" [readonly]="!isEditing" />
+          </label>
+          <label class="field">
+            <span>Last name</span>
+            <input formControlName="lastName" [readonly]="!isEditing" />
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input
+              type="email"
+              formControlName="email"
+              [readonly]="!isEditing"
+            />
+          </label>
+          <label class="field">
+            <span>Phone number</span>
+            <input
+              type="tel"
+              formControlName="phoneNumber"
+              [readonly]="!isEditing"
+            />
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-section" formGroupName="address">
+      <div class="section-heading">
+        <div>
+          <h2>Address</h2>
+          <p>Daycare location</p>
+        </div>
+      </div>
+      <div class="field-grid">
+        <label class="field">
+          <span>Apartment / Suite</span>
+          <input formControlName="apartment" [readonly]="!isEditing" />
+        </label>
+        <label class="field field-wide">
+          <span>Street address</span>
+          <input formControlName="address" [readonly]="!isEditing" />
+        </label>
+        <label class="field">
+          <span>City</span>
+          <input formControlName="city" [readonly]="!isEditing" />
+        </label>
+        <label class="field">
+          <span>State / Province</span>
+          <input formControlName="state" [readonly]="!isEditing" />
+        </label>
+        <label class="field">
+          <span>Postal code</span>
+          <input formControlName="postalCode" [readonly]="!isEditing" />
+        </label>
+        <label class="field">
+          <span>Country</span>
+          <input formControlName="country" [readonly]="!isEditing" />
+        </label>
+      </div>
+    </section>
+  </form>
+</main>

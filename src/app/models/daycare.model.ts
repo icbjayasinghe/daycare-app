@@ -5,6 +5,22 @@ export interface DaycareDto {
   address: DaycareAddress;
 }
 
+export interface DaycareProfile {
+  id?: number | string;
+  name: string;
+  telephone: string;
+  owners: DaycareProfileOwner[];
+  address: DaycareAddress;
+}
+
+export interface DaycareProfileOwner {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  userType?: number;
+}
+
 export interface DaycareOwner {
   firstName: string;
   lastName: string;

@@ -25,6 +25,7 @@ const ROLE_HOME_ROUTES: Record<UserRole, string> = {
 })
 export class AuthServiceService {
   private readonly tokenKey = 'accessToken';
+  private readonly emailKey = 'userEmail';
   private readonly parentAuthenticatedSubject = new BehaviorSubject<boolean>(
     false,
   );
@@ -52,8 +53,8 @@ export class AuthServiceService {
     });
   }
 
-  establishParentSession(response: LoginResponse): boolean {
-    if (!this.establishSession(response) || !this.hasRole('PARENT')) {
+  establishParentSession(response: LoginResponse, email: string): boolean {
+    if (!this.establishSession(response, email) || !this.hasRole('PARENT')) {
       this.logout();
       return false;
     }
@@ -61,8 +62,8 @@ export class AuthServiceService {
     return true;
   }
 
-  establishDaycareSession(response: LoginResponse): boolean {
-    if (!this.establishSession(response) || !this.hasRole('PROVIDER')) {
+  establishDaycareSession(response: LoginResponse, email: string): boolean {
+    if (!this.establishSession(response, email) || !this.hasRole('PROVIDER')) {
       this.logout();
       return false;
     }
@@ -70,8 +71,9 @@ export class AuthServiceService {
     return true;
   }
 
-  establishSession(response: LoginResponse): boolean {
+  establishSession(response: LoginResponse, email: string): boolean {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.emailKey);
     const token = response?.accessToken;
     const roles = token ? this.readRoles(token) : [];
     if (!token || !roles.length) {
@@ -80,6 +82,7 @@ export class AuthServiceService {
     }
 
     localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.emailKey, email.trim());
     this.refreshSessionState();
     return true;
   }
@@ -110,6 +113,7 @@ export class AuthServiceService {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.emailKey);
     this.clearSessionState();
   }
 
@@ -125,6 +129,7 @@ export class AuthServiceService {
     this.parentAuthenticatedSubject.next(!!parentProfile);
     if (token && !roles.length) {
       localStorage.removeItem(this.tokenKey);
+      localStorage.removeItem(this.emailKey);
     }
   }
 
@@ -150,14 +155,21 @@ export class AuthServiceService {
       return null;
     }
 
-    const fullName = typeof payload.name === 'string' ? payload.name.trim() : '';
+    const fullName =
+      typeof payload.name === 'string' ? payload.name.trim() : '';
     const [firstFromName = '', ...lastNameParts] = fullName.split(/\s+/);
     return {
       givenName:
-        payload.given_name ?? payload.givenName ?? payload.firstName ??
-        firstFromName ?? payload.preferred_username ?? '',
+        payload.given_name ??
+        payload.givenName ??
+        payload.firstName ??
+        firstFromName ??
+        payload.preferred_username ??
+        '',
       familyName:
-        payload.family_name ?? payload.familyName ?? payload.lastName ??
+        payload.family_name ??
+        payload.familyName ??
+        payload.lastName ??
         lastNameParts.join(' '),
       role,
     };
