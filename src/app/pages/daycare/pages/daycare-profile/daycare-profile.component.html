@@ -113,27 +113,19 @@
         <div class="field-grid">
           <label class="field">
             <span>First name</span>
-            <input formControlName="firstName" [readonly]="!isEditing" />
+            <input formControlName="firstName" [readonly]="true" />
           </label>
           <label class="field">
             <span>Last name</span>
-            <input formControlName="lastName" [readonly]="!isEditing" />
+            <input formControlName="lastName" [readonly]="true" />
           </label>
           <label class="field">
             <span>Email</span>
-            <input
-              type="email"
-              formControlName="email"
-              [readonly]="!isEditing"
-            />
+            <input type="email" formControlName="email" [readonly]="true" />
           </label>
           <label class="field">
             <span>Phone number</span>
-            <input
-              type="tel"
-              formControlName="phoneNumber"
-              [readonly]="!isEditing"
-            />
+            <input type="tel" formControlName="phoneNumber" [readonly]="true" />
           </label>
         </div>
       </div>
@@ -172,6 +164,24 @@
           <input formControlName="country" [readonly]="!isEditing" />
         </label>
       </div>
+    </section>
+
+    <section class="profile-section map-section">
+      <div class="section-heading">
+        <div>
+          <h2>Daycare location</h2>
+          <p>{{ mapQuery || "Add an address to preview the map." }}</p>
+        </div>
+      </div>
+      <iframe
+        *ngIf="mapUrl"
+        class="map-frame"
+        [src]="mapUrl"
+        title="Google Map showing daycare location"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
     </section>
   </form>
 </main>

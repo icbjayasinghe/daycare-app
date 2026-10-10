@@ -95,6 +95,7 @@ export class DaycareSignupDialogComponent {
     });
 
     const daycareData: DaycareDto = {
+      id: formValue.id || 0, // Assuming id is optional and can be set to 0 for new registrations
       name: formValue.name,
       telephone: formValue.telephone,
       owners: [{ ...formValue.owners, userType: 0 }],

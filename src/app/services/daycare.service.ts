@@ -26,7 +26,7 @@ export class DaycareService {
 
   updateMyDaycare(profile: DaycareProfile): Observable<DaycareProfile> {
     return this.http.put<DaycareProfile>(
-      `${environment.baseUrl}/api/daycare/me`,
+      `${environment.baseUrl}/api/daycare`,
       profile,
     );
   }

@@ -1,4 +1,5 @@
 export interface DaycareDto {
+  id: number;
   name: string;
   telephone: string;
   owners: DaycareOwner[];
@@ -37,4 +38,6 @@ export interface DaycareAddress {
   state: string;
   postalCode: string;
   country: string;
+  latitude?: number;
+  longitude?: number;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DaycareAddress, DaycareProfile } from 'src/app/models/daycare.model';
 import { DaycareService } from 'src/app/services/daycare.service';
 
@@ -11,6 +12,8 @@ import { DaycareService } from 'src/app/services/daycare.service';
 export class DaycareProfileComponent implements OnInit {
   readonly profileForm: FormGroup;
   readonly email = localStorage.getItem('userEmail') || '';
+  mapUrl: SafeResourceUrl | null = null;
+  mapQuery = '';
   profile: DaycareProfile | null = null;
   loading = true;
   saving = false;
@@ -21,6 +24,7 @@ export class DaycareProfileComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly daycareService: DaycareService,
+    private readonly sanitizer: DomSanitizer,
   ) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
@@ -33,7 +37,12 @@ export class DaycareProfileComponent implements OnInit {
         state: ['', Validators.required],
         postalCode: ['', Validators.required],
         country: ['', Validators.required],
+        latitude: [null],
+        longitude: [null],
       }),
+    });
+    this.profileForm.get('address')?.valueChanges.subscribe(() => {
+      this.updateMapUrl();
     });
   }
 
@@ -65,6 +74,7 @@ export class DaycareProfileComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
     this.isEditing = true;
+    this.updateMapUrl();
   }
 
   cancelEditing(): void {
@@ -73,6 +83,7 @@ export class DaycareProfileComponent implements OnInit {
     }
     this.isEditing = false;
     this.errorMessage = '';
+    this.updateMapUrl();
   }
 
   saveProfile(): void {
@@ -101,6 +112,7 @@ export class DaycareProfileComponent implements OnInit {
         this.setProfile(savedProfile || updatedProfile);
         this.isEditing = false;
         this.saving = false;
+        this.updateMapUrl();
         this.successMessage = 'Daycare profile saved.';
       },
       error: () => {
@@ -113,6 +125,7 @@ export class DaycareProfileComponent implements OnInit {
   private setProfile(profile: DaycareProfile): void {
     this.profile = profile;
     this.patchForm(profile);
+    this.updateMapUrl();
   }
 
   private patchForm(profile: DaycareProfile): void {
@@ -126,6 +139,8 @@ export class DaycareProfileComponent implements OnInit {
         state: profile.address?.state || '',
         postalCode: profile.address?.postalCode || '',
         country: profile.address?.country || '',
+        latitude: profile.address?.latitude ?? null,
+        longitude: profile.address?.longitude ?? null,
       },
     });
     this.profileForm.setControl(
@@ -142,5 +157,31 @@ export class DaycareProfileComponent implements OnInit {
         ),
       ),
     );
+  }
+
+  private updateMapUrl(): void {
+    const address = this.profileForm.get('address')?.value as DaycareAddress;
+    const hasCoordinates =
+      Number.isFinite(address?.latitude) && Number.isFinite(address?.longitude);
+    const addressQuery = [
+      address?.apartment,
+      address?.address,
+      address?.city,
+      address?.state,
+      address?.postalCode,
+      address?.country,
+    ]
+      .filter((part) => typeof part === 'string' && part.trim())
+      .join(', ');
+    this.mapQuery =
+      !this.isEditing && hasCoordinates
+        ? `${address.latitude},${address.longitude}`
+        : addressQuery;
+
+    this.mapUrl = this.mapQuery
+      ? this.sanitizer.bypassSecurityTrustResourceUrl(
+          `https://www.google.com/maps?q=${encodeURIComponent(this.mapQuery)}&output=embed`,
+        )
+      : null;
   }
 }

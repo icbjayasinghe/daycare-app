@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SecurityContext } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { DaycareProfile } from 'src/app/models/daycare.model';
 import { DaycareService } from 'src/app/services/daycare.service';
@@ -28,6 +30,8 @@ describe('DaycareProfileComponent', () => {
       state: 'CA',
       postalCode: '90000',
       country: 'USA',
+      latitude: 37.7749,
+      longitude: -122.4194,
     },
   };
 
@@ -71,5 +75,18 @@ describe('DaycareProfileComponent', () => {
     expect(daycareService.updateMyDaycare).toHaveBeenCalled();
     expect(component.profile?.name).toBe('Bright Steps');
     expect(component.isEditing).toBeFalse();
+  });
+
+  it('uses geocode coordinates and previews the edited address', () => {
+    const sanitizer = TestBed.inject(DomSanitizer);
+    expect(component.mapQuery).toBe('37.7749,-122.4194');
+
+    component.startEditing();
+    component.profileForm.get('address.address')?.setValue('20 Oak Road');
+
+    expect(component.mapQuery).toContain('20 Oak Road');
+    expect(
+      sanitizer.sanitize(SecurityContext.RESOURCE_URL, component.mapUrl),
+    ).toContain('20%20Oak%20Road');
   });
 });
