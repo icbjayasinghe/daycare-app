@@ -1,0 +1,6 @@
+.child-form {
+  display: grid;
+  gap: 8px;
+  min-width: 280px;
+  padding-top: 8px;
+}

@@ -4,6 +4,8 @@ import { ParentLayoutComponent } from './parent-layout/parent-layout.component';
 import { ParentDashboardComponent } from './pages/parent-dashboard/parent-dashboard.component';
 import AuthGuard from 'src/app/guards/auth.guard';
 import { ParentDaycaresComponent } from './pages/parent-daycares/parent-daycares.component';
+import { ParentChildrenComponent } from './pages/parent-children/parent-children.component';
+import { ParentProfileComponent } from './pages/parent-profile/parent-profile.component';
 
 const routes: Routes = [
   {
@@ -20,6 +22,18 @@ const routes: Routes = [
       {
         path: 'daycares',
         component: ParentDaycaresComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PARENT'] },
+      },
+      {
+        path: 'children',
+        component: ParentChildrenComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PARENT'] },
+      },
+      {
+        path: 'profile',
+        component: ParentProfileComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PARENT'] },
       },

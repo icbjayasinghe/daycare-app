@@ -1,14 +1,16 @@
 export interface ParentDto {
-  id?: number;           
-  firstName: string;      
-  lastName: string;       
-  email: string;          
-  password: string;       
-  phone?: string;         
-  parentStatus?: number;  
-  address?: AddressDto;   
-  children?: ChildDto[];  
+  id?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phone?: string;
+  parentStatus?: number;
+  address?: AddressDto;
+  children?: ChildDto[];
 }
+
+export type ParentProfileDto = Omit<ParentDto, 'password'>;
 
 export interface AddressDto {
   apartment?: string;
@@ -20,5 +22,9 @@ export interface AddressDto {
 }
 
 export interface ChildDto {
-  // add Child fields here
+  id?: number;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  sex: string;
 }
