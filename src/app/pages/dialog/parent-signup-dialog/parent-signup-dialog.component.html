@@ -1,13 +1,12 @@
 <h2 mat-dialog-title>Welcome to TipToe</h2>
 <mat-dialog-content>
-  <mat-tab-group>
-    <mat-tab label="Sign In As a Parent ">
-      <form
-        class="example-form"
-        [formGroup]="loginForm"
-        (ngSubmit)="onLogin()"
-        class="example-form"
-      >
+  <mat-tab-group
+    [selectedIndex]="selectedTabIndex"
+    (selectedIndexChange)="selectedTabIndex = $event"
+  >
+    <mat-tab label="Sign In As a Parent">
+      <form class="example-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <p *ngIf="signupSuccess" role="status">{{ signupSuccess }}</p>
         <mat-form-field class="example-full-width">
           <mat-label>Email</mat-label>
           <input
@@ -210,10 +209,13 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="signupForm.invalid"
+          [disabled]="signupForm.invalid || registering"
         >
-          Register
+          {{ registering ? "Registering..." : "Register" }}
         </button>
+        <mat-error *ngIf="signupError" role="alert">
+          {{ signupError }}
+        </mat-error>
       </form>
     </mat-tab>
   </mat-tab-group>

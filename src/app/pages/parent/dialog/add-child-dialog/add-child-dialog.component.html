@@ -2,6 +2,8 @@
 
 <form [formGroup]="childForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content class="child-form">
+    <p *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+
     <mat-form-field appearance="outline">
       <mat-label>First name</mat-label>
       <input matInput formControlName="firstName" autocomplete="given-name" />
@@ -41,6 +43,8 @@
 
   <mat-dialog-actions align="end">
     <button mat-button type="button" mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" type="submit">Add child</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="saving">
+      {{ saving ? "Adding..." : "Add child" }}
+    </button>
   </mat-dialog-actions>
 </form>

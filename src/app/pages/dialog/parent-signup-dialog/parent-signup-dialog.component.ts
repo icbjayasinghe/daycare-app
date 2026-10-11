@@ -21,7 +21,11 @@ export class ParentSignupDialogComponent {
   loginForm: FormGroup;
 
   loading = false;
+  registering = false;
   loginError = '';
+  signupError = '';
+  signupSuccess = '';
+  selectedTabIndex = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -96,15 +100,17 @@ export class ParentSignupDialogComponent {
   // }
 
   onSubmit() {
-    if (this.signupForm.valid) {
-      this.registerParent();
-      // Handle form submission (e.g., API call)
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      return;
     }
-  }
-  registerParent() {
-    const formValue = this.signupForm.value;
 
-    // Map form values to ParentDto model
+    this.registerParent();
+  }
+
+  registerParent(): void {
+    const formValue = this.signupForm.getRawValue();
+
     const parentData: ParentDto = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
@@ -123,17 +129,24 @@ export class ParentSignupDialogComponent {
       children: [],
     };
 
-    this.parentService.registerParent(parentData).subscribe(
-      (response: any) => {
-        console.log('Parent registered successfully:', response);
-        // Handle successful registration (e.g., show a success message, close dialog)
+    this.registering = true;
+    this.signupError = '';
+    this.signupSuccess = '';
+    this.parentService.registerParent(parentData).subscribe({
+      next: () => {
+        this.registering = false;
+        this.loginForm.patchValue({
+          email: parentData.email,
+          password: '',
+        });
+        this.signupSuccess = 'Successfully registered as a parent. Please sign in.';
+        this.selectedTabIndex = 0;
       },
-
-      // error => {
-      //   console.error('Error registering parent:', error);
-      //   // Handle registration error (e.g., show an error message)
-      // }
-    );
+      error: () => {
+        this.registering = false;
+        this.signupError = 'Unable to register. Please try again.';
+      },
+    });
   }
 
   emailFormControl = new FormControl('', [

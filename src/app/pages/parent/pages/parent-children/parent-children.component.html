@@ -1,10 +1,59 @@
-<div class="children-actions">
-  <button
-    mat-fab
-    color="primary"
-    aria-label="Add child"
-    (click)="openAddChildDialog()"
+<main class="children-page">
+  <header class="children-header">
+    <div>
+      <h1>Children</h1>
+      <p>View the children registered to your account.</p>
+    </div>
+    <button
+      mat-fab
+      color="primary"
+      aria-label="Add child"
+      (click)="openAddChildDialog()"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </header>
+
+  <p *ngIf="errorMessage" class="feedback-error" role="alert">
+    {{ errorMessage }}
+    <button type="button" class="retry-button" (click)="loadChildren()">
+      Retry
+    </button>
+  </p>
+
+  <p *ngIf="loading" class="loading-state" aria-live="polite">
+    Loading children...
+  </p>
+
+  <p
+    *ngIf="!loading && !errorMessage && children.length === 0"
+    class="empty-state"
   >
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
+    No children have been added yet.
+  </p>
+
+  <section
+    *ngIf="!loading && children.length"
+    class="children-grid"
+    aria-label="Children"
+  >
+    <button
+      *ngFor="let child of children"
+      type="button"
+      class="child-tile"
+      [class.selected]="selectedChild === child"
+      [attr.aria-pressed]="selectedChild === child"
+      (click)="selectChild(child)"
+    >
+      <span class="child-name">{{ child.firstName }} {{ child.lastName }}</span>
+      <span class="child-detail">
+        <strong>Date of birth</strong>
+        {{ child.dob | date: "mediumDate" }}
+      </span>
+      <span class="child-detail">
+        <strong>Sex</strong>
+        {{ child.sex }}
+      </span>
+    </button>
+  </section>
+</main>
