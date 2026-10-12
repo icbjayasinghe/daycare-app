@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChildDto } from '../models/parent.model';
+import { DayCareApplicationDto } from '../models/daycare-application.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,15 @@ export class ChildService {
     return this.http.get<ChildDto[]>(
       `${environment.baseUrl}/api/child/byEmail/${encodeURIComponent(parentEmail)}`,
     );
+  }
+
+  applyDaycare(
+    parentEmail: string,
+    daycareId: number | string,
+    application: DayCareApplicationDto,
+  ): Observable<any> {
+    const url = `${environment.baseUrl}/api/child/byEmail/${encodeURIComponent(parentEmail)}/request/${encodeURIComponent(daycareId)}`;
+    return this.http.post(url, application);
   }
 
   // updateMyChild(childData: any): Observable<any> {

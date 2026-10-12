@@ -1,1 +1,175 @@
-<p>apply-child-dialog works!</p>
+<h2 mat-dialog-title>Apply to {{ daycare.name }}</h2>
+
+<mat-dialog-content class="wizard-content">
+  <ol class="step-indicator" aria-label="Application steps">
+    <li [class.active]="currentStep === 1" [class.complete]="currentStep > 1">
+      <span>1</span>
+      <span>Application method</span>
+    </li>
+    <li [class.active]="currentStep === 2" [class.complete]="currentStep > 2">
+      <span>2</span>
+      <span>Select a child</span>
+    </li>
+    <li [class.active]="currentStep === 3">
+      <span>3</span>
+      <span>Review</span>
+    </li>
+  </ol>
+
+  <section *ngIf="currentStep === 1" aria-labelledby="method-heading">
+    <h3 id="method-heading">How would you like to apply?</h3>
+    <p class="step-description">
+      Applying through the portal is the recommended option.
+    </p>
+
+    <button
+      type="button"
+      class="choice-card"
+      [class.selected]="applicationMethod === 'portal'"
+      [attr.aria-pressed]="applicationMethod === 'portal'"
+      (click)="applicationMethod = 'portal'; errorMessage = ''"
+    >
+      <span class="choice-heading">
+        Apply through the portal
+        <span class="recommended-badge">Recommended</span>
+      </span>
+      <span>Submit your application securely from this account.</span>
+    </button>
+
+    <button
+      type="button"
+      class="choice-card"
+      [class.selected]="applicationMethod === 'website'"
+      [attr.aria-pressed]="applicationMethod === 'website'"
+      [disabled]="!websiteUrl"
+      (click)="applicationMethod = 'website'; errorMessage = ''"
+    >
+      <span class="choice-heading">Apply through the daycare website</span>
+      <span *ngIf="websiteUrl">{{ websiteUrl }}</span>
+      <span *ngIf="!websiteUrl">
+        This daycare has not provided a website.
+      </span>
+    </button>
+  </section>
+
+  <section *ngIf="currentStep === 2" aria-labelledby="child-heading">
+    <h3 id="child-heading">Choose a child</h3>
+    <p class="step-description">
+      Select which child you are applying for.
+    </p>
+
+    <p *ngIf="loadingChildren" class="status-message" role="status">
+      Loading children...
+    </p>
+    <p *ngIf="errorMessage" class="status-message error-message" role="alert">
+      {{ errorMessage }}
+    </p>
+    <p
+      *ngIf="!loadingChildren && children.length === 0 && !errorMessage"
+      class="status-message"
+    >
+      No children are registered to your account yet.
+    </p>
+
+    <div *ngIf="!loadingChildren && children.length" class="child-cards">
+      <button
+        *ngFor="let child of children"
+        type="button"
+        class="child-card"
+        [class.selected]="selectedChild === child"
+        [attr.aria-pressed]="selectedChild === child"
+        (click)="selectChild(child)"
+      >
+        <span class="child-name">{{ child.firstName }} {{ child.lastName }}</span>
+        <span class="child-detail">
+          <strong>Date of birth</strong>
+          {{ child.dob | date: 'mediumDate' }}
+        </span>
+        <span class="child-detail">
+          <strong>Sex</strong>
+          {{ child.sex }}
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <section *ngIf="currentStep === 3" aria-labelledby="review-heading">
+    <h3 id="review-heading">Review your application</h3>
+    <p class="step-description">
+      Check the details below before submitting.
+    </p>
+
+    <div class="summary-card">
+      <h4>Daycare details</h4>
+      <dl>
+        <dt>Name</dt>
+        <dd>{{ daycare.name }}</dd>
+        <dt>Address</dt>
+        <dd>{{ daycareAddress }}</dd>
+        <dt>Telephone</dt>
+        <dd>{{ daycare.telephone || 'Not provided' }}</dd>
+        <dt>Application method</dt>
+        <dd>
+          {{
+            applicationMethod === 'portal'
+              ? 'Portal (recommended)'
+              : 'Daycare website'
+          }}
+        </dd>
+      </dl>
+
+      <h4>Child details</h4>
+      <dl *ngIf="selectedChild">
+        <dt>Name</dt>
+        <dd>{{ selectedChild.firstName }} {{ selectedChild.lastName }}</dd>
+        <dt>Date of birth</dt>
+        <dd>{{ selectedChild.dob | date: 'mediumDate' }}</dd>
+        <dt>Sex</dt>
+        <dd>{{ selectedChild.sex }}</dd>
+      </dl>
+    </div>
+  </section>
+
+  <p *ngIf="errorMessage && currentStep !== 2" class="status-message error-message" role="alert">
+    {{ errorMessage }}
+  </p>
+  <p *ngIf="successMessage" class="status-message success-message" role="status">
+    {{ successMessage }}
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="wizard-actions">
+  <button
+    *ngIf="currentStep > 1"
+    mat-button
+    type="button"
+    [disabled]="saving"
+    (click)="goToStep(currentStep - 1)"
+  >
+    Back
+  </button>
+  <button
+    *ngIf="currentStep < 3"
+    mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="
+      saving ||
+      (currentStep === 1 && applicationMethod === 'website' && !websiteUrl) ||
+      (currentStep === 2 && (!selectedChild || loadingChildren))
+    "
+    (click)="goToStep(currentStep + 1)"
+  >
+    Next
+  </button>
+  <button
+    *ngIf="currentStep === 3"
+    mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="saving || !selectedChild"
+    (click)="apply()"
+  >
+    {{ saving ? 'Submitting...' : 'Apply' }}
+  </button>
+</mat-dialog-actions>

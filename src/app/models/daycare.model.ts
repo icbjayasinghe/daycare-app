@@ -2,6 +2,8 @@ export interface DaycareDto {
   id: number;
   name: string;
   telephone: string;
+  website?: string;
+  withOwnPortal?: boolean;
   owners: DaycareOwner[];
   address: DaycareAddress;
 }
@@ -10,6 +12,8 @@ export interface DaycareProfile {
   id?: number | string;
   name: string;
   telephone: string;
+  website?: string;
+  withOwnPortal?: boolean;
   owners: DaycareProfileOwner[];
   address: DaycareAddress;
 }
