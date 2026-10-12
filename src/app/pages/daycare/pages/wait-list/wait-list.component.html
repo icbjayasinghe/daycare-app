@@ -1,0 +1,73 @@
+<main class="wait-list-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">DAYCARE MANAGEMENT</p>
+      <h1>Requested applications</h1>
+      <p class="page-description">
+        Review applications submitted to your daycare and check their status.
+      </p>
+    </div>
+    <button
+      *ngIf="errorMessage"
+      type="button"
+      class="retry-button"
+      (click)="loadApplications()"
+    >
+      Retry
+    </button>
+  </header>
+
+  <p *ngIf="loading" class="state-message" role="status">
+    Loading requested applications...
+  </p>
+  <p *ngIf="errorMessage" class="state-message error-message" role="alert">
+    {{ errorMessage }}
+  </p>
+  <p
+    *ngIf="!loading && !errorMessage && applications.length === 0"
+    class="state-message"
+  >
+    There are no applications for your daycare yet.
+  </p>
+
+  <div
+    *ngIf="!loading && !errorMessage && applications.length > 0"
+    class="table-container"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Child</th>
+          <th scope="col">Date of birth</th>
+          <th scope="col">Sex</th>
+          <th scope="col">Requested on</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let application of applications">
+          <th scope="row">
+            {{ application.child.firstName }} {{ application.child.lastName }}
+          </th>
+          <td>{{ application.child.dob | date: 'mediumDate' }}</td>
+          <td>{{ application.child.sex }}</td>
+          <td>
+            {{
+              application.appliedAt
+                ? (application.appliedAt | date: 'mediumDate')
+                : '—'
+            }}
+          </td>
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="getStatusClass(application.status)"
+            >
+              {{ application.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

@@ -7,6 +7,7 @@ import { DaycareSidebarComponent } from './components/daycare-sidebar/daycare-si
 import { DaycareLayoutComponent } from './daycare-layout/daycare-layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile.component';
+import { WaitListComponent } from './pages/wait-list/wait-list.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile
     DaycareLayoutComponent,
     DashboardComponent,
     DaycareProfileComponent,
+    WaitListComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, DaycareRoutingModule],
 })

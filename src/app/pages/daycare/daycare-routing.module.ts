@@ -4,6 +4,7 @@ import { DaycareLayoutComponent } from './daycare-layout/daycare-layout.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile.component';
 import AuthGuard from 'src/app/guards/auth.guard';
+import { WaitListComponent } from './pages/wait-list/wait-list.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,12 @@ const routes: Routes = [
       {
         path: 'profile',
         component: DaycareProfileComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'waiting-list',
+        component: WaitListComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },

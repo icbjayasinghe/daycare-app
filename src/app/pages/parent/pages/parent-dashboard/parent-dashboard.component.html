@@ -1,1 +1,73 @@
-<p>parent-dashboard works!</p>
+<main class="dashboard-page">
+  <header class="dashboard-header">
+    <p class="eyebrow">PARENT DASHBOARD</p>
+    <h1>Your daycare applications</h1>
+    <p>Track the status of your applications and the children they are for.</p>
+  </header>
+
+  <section class="applications-section" aria-labelledby="applications-heading">
+    <div class="section-heading">
+      <h2 id="applications-heading">Applied daycares</h2>
+      <button
+        *ngIf="errorMessage"
+        type="button"
+        class="retry-button"
+        (click)="loadApplications()"
+      >
+        Retry
+      </button>
+    </div>
+
+    <p *ngIf="loading" class="state-message" role="status">
+      Loading applications...
+    </p>
+    <p *ngIf="errorMessage" class="state-message error-message" role="alert">
+      {{ errorMessage }}
+    </p>
+    <p
+      *ngIf="!loading && !errorMessage && applications.length === 0"
+      class="state-message"
+    >
+      You have not applied to any daycares yet.
+    </p>
+
+    <div
+      *ngIf="!loading && !errorMessage && applications.length > 0"
+      class="table-container"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Daycare</th>
+            <th scope="col">Child</th>
+            <th scope="col">Applied</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let application of applications">
+            <th scope="row">{{ application.dayCare.name }}</th>
+            <td>
+              {{ application.child.firstName }} {{ application.child.lastName }}
+            </td>
+            <td>
+              {{
+                application.appliedAt
+                  ? (application.appliedAt | date: 'mediumDate')
+                  : '—'
+              }}
+            </td>
+            <td>
+              <span
+                class="status-badge"
+                [ngClass]="getStatusClass(application.status)"
+              >
+                {{ application.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
