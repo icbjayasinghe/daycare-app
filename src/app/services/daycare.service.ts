@@ -18,6 +18,10 @@ export class DaycareService {
     return this.http.post(`${url}`, daycareData, { headers });
   }
 
+  getDaycares(): Observable<DaycareProfile[]> {
+    return this.http.get<DaycareProfile[]>(`${environment.baseUrl}/api/daycare`);
+  }
+
   getMyDaycare(email: string): Observable<DaycareProfile> {
     return this.http.get<DaycareProfile>(
       `${environment.baseUrl}/api/daycare/byOwner/${encodeURIComponent(email)}`,

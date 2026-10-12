@@ -1,0 +1,185 @@
+.daycares-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  color: #20302c;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dce5df;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #477563;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.page-description,
+.section-heading p {
+  margin-bottom: 0;
+  color: #718079;
+}
+
+.map-section,
+.daycare-list {
+  margin-bottom: 28px;
+}
+
+.map-section h2,
+.section-heading h2 {
+  margin-bottom: 8px;
+  font-size: 19px;
+}
+
+.map-frame,
+.map-placeholder {
+  display: block;
+  width: 100%;
+  height: 340px;
+  box-sizing: border-box;
+  border: 1px solid #dce5df;
+  border-radius: 4px;
+}
+
+.map-frame {
+  border: 0;
+}
+
+.map-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #f1f5f2;
+  color: #52665c;
+  text-align: center;
+}
+
+.section-heading {
+  margin-bottom: 16px;
+}
+
+.status-message {
+  padding: 12px 14px;
+  border-radius: 4px;
+  background: #f1f5f2;
+  color: #52665c;
+  font-size: 14px;
+}
+
+.error-message {
+  background: #fff0ed;
+  color: #8f342b;
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid #dce5df;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e6ece8;
+}
+
+thead {
+  background: #f1f5f2;
+  color: #52665c;
+  font-size: 13px;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover,
+tbody tr:focus-visible {
+  background: #f4f8f5;
+  outline: none;
+}
+
+tbody tr.selected-row {
+  background: #eaf5ee;
+}
+
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.action-cell {
+  min-width: 260px;
+  white-space: nowrap;
+}
+
+.contact-button,
+.apply-button {
+  min-height: 36px;
+  padding: 0 8px;
+  border: 1px solid #cbd8d1;
+  border-radius: 4px;
+  background: #fff;
+  color: #24664f;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.contact-button {
+  width: 36px;
+  padding: 0;
+  margin-right: 4px;
+}
+
+.contact-button:disabled {
+  color: #9aa8a0;
+  cursor: not-allowed;
+}
+
+.contact-value {
+  display: inline-block;
+  margin-right: 10px;
+  color: #30443b;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.apply-button {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+@media (max-width: 640px) {
+  .map-frame,
+  .map-placeholder {
+    height: 280px;
+  }
+
+  th,
+  td {
+    padding: 11px 12px;
+  }
+}

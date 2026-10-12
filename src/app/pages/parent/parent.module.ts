@@ -12,6 +12,7 @@ import { AddChildDialogComponent } from './dialog/add-child-dialog/add-child-dia
 import { MaterialModule } from 'src/app/shared/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ParentProfileComponent } from './pages/parent-profile/parent-profile.component';
+import { ApplyChildDialogComponent } from './dialog/apply-child-dialog/apply-child-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ParentProfileComponent } from './pages/parent-profile/parent-profile.co
     ParentChildrenComponent,
     AddChildDialogComponent,
     ParentProfileComponent,
+    ApplyChildDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -1,1 +1,132 @@
-<p>parent-daycares works!</p>
+<main class="daycares-page">
+  <header class="page-header">
+    <p class="eyebrow">FIND CARE</p>
+    <h1>Daycares</h1>
+    <p class="page-description">
+      Select a daycare to view its location on the map.
+    </p>
+  </header>
+
+  <section class="map-section" aria-label="Selected daycare on the map">
+    <h2>
+      {{ selectedDaycare ? selectedDaycare.name + " location" : "Daycare map" }}
+    </h2>
+    <iframe
+      *ngIf="mapUrl; else noMap"
+      class="map-frame"
+      [src]="mapUrl"
+      [title]="
+        selectedDaycare
+          ? 'Google Map showing ' + selectedDaycare.name
+          : 'Google Map showing selected daycare'
+      "
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen
+    ></iframe>
+    <ng-template #noMap>
+      <div class="map-placeholder">
+        {{
+          selectedDaycare
+            ? "No location is available for this daycare."
+            : "Select a daycare to see its location."
+        }}
+      </div>
+    </ng-template>
+  </section>
+
+  <section class="daycare-list" aria-labelledby="daycare-list-heading">
+    <div class="section-heading">
+      <h2 id="daycare-list-heading">All daycares</h2>
+      <p>Choose a row to show that daycare on the map.</p>
+    </div>
+
+    <p *ngIf="loading" class="status-message" role="status">
+      Loading daycares...
+    </p>
+    <p *ngIf="errorMessage" class="status-message error-message" role="alert">
+      {{ errorMessage }}
+    </p>
+    <p
+      *ngIf="!loading && !errorMessage && daycares.length === 0"
+      class="status-message"
+    >
+      No daycares are available yet.
+    </p>
+
+    <div
+      *ngIf="!loading && !errorMessage && daycares.length > 0"
+      class="table-container"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Daycare</th>
+            <th scope="col">Address</th>
+            <th scope="col">Inquire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let daycare of daycares"
+            (click)="selectDaycare(daycare)"
+            (keydown)="onRowKeydown($event, daycare)"
+            [class.selected-row]="selectedDaycare === daycare"
+            [attr.aria-label]="'Show ' + daycare.name + ' on map'"
+            [attr.aria-selected]="selectedDaycare === daycare"
+            tabindex="0"
+          >
+            <th scope="row">{{ daycare.name }}</th>
+            <td>{{ getAddressLabel(daycare) }}</td>
+            <td class="action-cell">
+              <button
+                type="button"
+                class="contact-button"
+                [disabled]="!daycare.telephone"
+                [attr.aria-label]="
+                  visibleTelephoneNumbers.has(daycare)
+                    ? 'Hide telephone number'
+                    : 'Show telephone number'
+                "
+                [attr.aria-expanded]="visibleTelephoneNumbers.has(daycare)"
+                (click)="$event.stopPropagation(); toggleTelephone(daycare)"
+              >
+                <mat-icon aria-hidden="true">call</mat-icon>
+              </button>
+              <span
+                *ngIf="visibleTelephoneNumbers.has(daycare)"
+                class="contact-value"
+              >
+                {{ daycare.telephone }}
+              </span>
+              <button
+                type="button"
+                class="contact-button"
+                [disabled]="!getDaycareEmail(daycare)"
+                [attr.aria-label]="
+                  visibleEmails.has(daycare)
+                    ? 'Hide daycare email'
+                    : 'Show daycare email'
+                "
+                [attr.aria-expanded]="visibleEmails.has(daycare)"
+                (click)="$event.stopPropagation(); toggleEmail(daycare)"
+              >
+                <mat-icon aria-hidden="true">email</mat-icon>
+              </button>
+              <span *ngIf="visibleEmails.has(daycare)" class="contact-value">
+                {{ getDaycareEmail(daycare) }}
+              </span>
+              <button
+                type="button"
+                class="apply-button"
+                (click)="$event.stopPropagation(); openApplyDialog(daycare)"
+              >
+                Apply
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
