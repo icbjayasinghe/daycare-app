@@ -55,4 +55,13 @@ export class ApplicationService {
       }
     }
   }
+
+  updateApplicationStatus(
+    application: DayCareApplicationDto,
+  ): Observable<DayCareApplicationDto> {
+    const url = `${environment.baseUrl}/api/application`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.put<DayCareApplicationDto>(url, application, { headers });
+  }
 }
