@@ -17,6 +17,23 @@
     </button>
   </header>
 
+  <div class="filter-row">
+    <label for="application-status-filter">Filter by status</label>
+    <select
+      id="application-status-filter"
+      [value]="selectedStatus"
+      (change)="onStatusChange($event)"
+    >
+      <option [value]="allStatuses">All</option>
+      <option
+        *ngFor="let status of applicationStatuses"
+        [value]="status"
+      >
+        {{ status }}
+      </option>
+    </select>
+  </div>
+
   <p *ngIf="loading" class="state-message" role="status">
     Loading requested applications...
   </p>
@@ -27,7 +44,11 @@
     *ngIf="!loading && !errorMessage && applications.length === 0"
     class="state-message"
   >
-    There are no applications for your daycare yet.
+    {{
+      selectedStatus === allStatuses
+        ? 'There are no applications for your daycare yet.'
+        : 'There are no ' + selectedStatus + ' applications.'
+    }}
   </p>
 
   <div

@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayCareApplicationDto } from '../models/daycare-application.model';
+import {
+  ApplicationStatus,
+  DayCareApplicationDto,
+} from '../models/daycare-application.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +25,34 @@ export class ApplicationService {
       return this.http.get<DayCareApplicationDto[]>(
         `${environment.baseUrl}/api/application?loggedInDayCareEmail=${encodeURIComponent(daycareEmail)}`,
       );
+    }
+  }
+
+  getMyApplicationsByStatus(
+    parentEmail: string,
+    daycareEmail: string,
+    status: ApplicationStatus | '',
+  ): Observable<DayCareApplicationDto[]> {
+    if (daycareEmail === '') {
+      if (status === '') {
+        return this.http.get<DayCareApplicationDto[]>(
+          `${environment.baseUrl}/api/application?loggedInParentEmail=${encodeURIComponent(parentEmail)}`,
+        );
+      } else {
+        return this.http.get<DayCareApplicationDto[]>(
+          `${environment.baseUrl}/api/application?loggedInParentEmail=${encodeURIComponent(parentEmail)}&status=${encodeURIComponent(status)}`,
+        );
+      }
+    } else {
+      if (status === '') {
+        return this.http.get<DayCareApplicationDto[]>(
+          `${environment.baseUrl}/api/application?loggedInDayCareEmail=${encodeURIComponent(daycareEmail)}`,
+        );
+      } else {
+        return this.http.get<DayCareApplicationDto[]>(
+          `${environment.baseUrl}/api/application?loggedInDayCareEmail=${encodeURIComponent(daycareEmail)}&status=${encodeURIComponent(status)}`,
+        );
+      }
     }
   }
 }

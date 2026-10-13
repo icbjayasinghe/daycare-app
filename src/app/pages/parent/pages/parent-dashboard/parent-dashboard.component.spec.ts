@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { DayCareApplicationDto } from 'src/app/models/daycare-application.model';
+import {
+  ApplicationStatus,
+  DayCareApplicationDto,
+} from 'src/app/models/daycare-application.model';
 import { ApplicationService } from 'src/app/services/application.service';
 
 import { ParentDashboardComponent } from './parent-dashboard.component';
@@ -33,7 +36,7 @@ describe('ParentDashboardComponent', () => {
           country: 'USA',
         },
       },
-      status: 'PENDING',
+      status: ApplicationStatus.PENDING,
       appliedAt: '2026-10-01T12:00:00Z',
     },
   ];
@@ -42,9 +45,11 @@ describe('ParentDashboardComponent', () => {
     localStorage.setItem('userEmail', 'parent@example.com');
     applicationService = jasmine.createSpyObj<ApplicationService>(
       'ApplicationService',
-      ['getMyApplications'],
+      ['getMyApplicationsByStatus'],
     );
-    applicationService.getMyApplications.and.returnValue(of(applications));
+    applicationService.getMyApplicationsByStatus.and.returnValue(
+      of(applications),
+    );
 
     await TestBed.configureTestingModule({
       declarations: [ParentDashboardComponent],
@@ -65,8 +70,9 @@ describe('ParentDashboardComponent', () => {
   });
 
   it('loads and displays daycare application statuses', () => {
-    expect(applicationService.getMyApplications).toHaveBeenCalledWith(
+    expect(applicationService.getMyApplicationsByStatus).toHaveBeenCalledWith(
       'parent@example.com',
+      '',
       '',
     );
     expect(component.applications).toEqual(applications);
@@ -76,7 +82,7 @@ describe('ParentDashboardComponent', () => {
   });
 
   it('shows an error if the applications cannot be loaded', () => {
-    applicationService.getMyApplications.and.returnValue(
+    applicationService.getMyApplicationsByStatus.and.returnValue(
       throwError(() => new Error('Request failed')),
     );
 

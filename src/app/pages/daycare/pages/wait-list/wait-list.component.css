@@ -48,6 +48,30 @@ h1 {
   cursor: pointer;
 }
 
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.filter-row label {
+  color: #52665c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.filter-row select {
+  min-width: 170px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #cbd8d1;
+  border-radius: 4px;
+  background: #fff;
+  color: #20302c;
+  font: inherit;
+}
+
 .table-container {
   overflow-x: auto;
   border: 1px solid #dce5df;
@@ -99,10 +123,20 @@ tbody tr:last-child td {
   color: #24664f;
 }
 
+.status-waitlisted {
+  background: #e6eefb;
+  color: #315b94;
+}
+
 .status-rejected,
 .status-declined {
   background: #fff0ed;
   color: #8f342b;
+}
+
+.status-withdrawn {
+  background: #eef1ef;
+  color: #52665c;
 }
 
 .state-message {

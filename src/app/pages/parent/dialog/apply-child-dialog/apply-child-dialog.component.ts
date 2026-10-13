@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DaycareProfile } from 'src/app/models/daycare.model';
-import { DayCareApplicationDto } from 'src/app/models/daycare-application.model';
+import {
+  ApplicationStatus,
+  DayCareApplicationDto,
+} from 'src/app/models/daycare-application.model';
 import { ChildDto } from 'src/app/models/parent.model';
 import { ChildService } from 'src/app/services/child.service';
 
@@ -133,7 +136,7 @@ export class ApplyChildDialogComponent implements OnInit {
     const application: DayCareApplicationDto = {
       child: this.selectedChild,
       dayCare: this.daycare,
-      status: 'PENDING',
+      status: ApplicationStatus.PENDING,
     };
 
     this.saving = true;

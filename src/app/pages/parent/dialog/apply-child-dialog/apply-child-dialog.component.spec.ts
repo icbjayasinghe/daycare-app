@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
+import { ApplicationStatus } from 'src/app/models/daycare-application.model';
 import { DaycareProfile } from 'src/app/models/daycare.model';
 import { ChildDto } from 'src/app/models/parent.model';
 import { ChildService } from 'src/app/services/child.service';
@@ -99,13 +100,13 @@ describe('ApplyChildDialogComponent', () => {
       {
         child,
         dayCare: daycare,
-        status: 'PENDING',
+        status: ApplicationStatus.PENDING,
       },
     );
     expect(dialogRef.close).toHaveBeenCalledWith({
       child,
       dayCare: daycare,
-      status: 'PENDING',
+      status: ApplicationStatus.PENDING,
     });
   });
 

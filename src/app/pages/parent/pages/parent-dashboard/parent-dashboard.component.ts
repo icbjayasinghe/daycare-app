@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DayCareApplicationDto } from 'src/app/models/daycare-application.model';
+import {
+  ApplicationStatus,
+  DayCareApplicationDto,
+} from 'src/app/models/daycare-application.model';
 import { ApplicationService } from 'src/app/services/application.service';
 
 @Component({
@@ -27,20 +30,22 @@ export class ParentDashboardComponent implements OnInit {
 
     this.loading = true;
     this.errorMessage = '';
-    this.applicationService.getMyApplications(this.parentEmail, '').subscribe({
-      next: (applications) => {
-        this.applications = applications;
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMessage =
-          'Unable to load your daycare applications. Please try again.';
-        this.loading = false;
-      },
-    });
+    this.applicationService
+      .getMyApplicationsByStatus(this.parentEmail, '', '')
+      .subscribe({
+        next: (applications) => {
+          this.applications = applications;
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMessage =
+            'Unable to load your daycare applications. Please try again.';
+          this.loading = false;
+        },
+      });
   }
 
-  getStatusClass(status: string): string {
+  getStatusClass(status: ApplicationStatus): string {
     return `status-${status.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   }
 }
