@@ -7,12 +7,19 @@ import { ApplicationService } from 'src/app/services/application.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChildProfileComponent } from '../../dialog/child-profile/child-profile.component';
 
+interface StatusAction {
+  label: string;
+  status: ApplicationStatus;
+  disabled?: boolean;
+}
+
 @Component({
   selector: 'app-wait-list',
   templateUrl: './wait-list.component.html',
   styleUrls: ['./wait-list.component.css'],
 })
 export class WaitListComponent implements OnInit {
+  readonly ApplicationStatus = ApplicationStatus;
   readonly daycareEmail = localStorage.getItem('userEmail') || '';
   readonly applicationStatuses = [
     ApplicationStatus.PENDING,
@@ -26,6 +33,8 @@ export class WaitListComponent implements OnInit {
   applications: DayCareApplicationDto[] = [];
   loading = false;
   errorMessage = '';
+  statusUpdateError = '';
+  readonly updatingApplicationIds = new Set<number>();
 
   constructor(
     private readonly applicationService: ApplicationService,
@@ -88,5 +97,90 @@ export class WaitListComponent implements OnInit {
       data: application.child,
       width: 'min(560px, 90vw)',
     });
+  }
+
+  getStatusActions(application: DayCareApplicationDto): StatusAction[] {
+    switch (application.status) {
+      case ApplicationStatus.PENDING:
+        return [
+          {
+            label: 'WAITLIST',
+            status: ApplicationStatus.WAITLISTED,
+            disabled: false,
+          },
+          {
+            label: 'REJECT',
+            status: ApplicationStatus.REJECTED,
+            disabled: false,
+          },
+        ];
+      case ApplicationStatus.WAITLISTED:
+        return [
+          { label: 'ACCEPT', status: ApplicationStatus.ACCEPTED },
+          {
+            label: 'WAITLISTED',
+            status: ApplicationStatus.WAITLISTED,
+            disabled: true,
+          },
+          { label: 'REJECTED', status: ApplicationStatus.REJECTED },
+        ];
+      case ApplicationStatus.ACCEPTED:
+        return [
+          { label: 'ENROLL', status: ApplicationStatus.ENROLLED },
+          {
+            label: 'ACCEPT',
+            status: ApplicationStatus.ACCEPTED,
+            disabled: true,
+          },
+          { label: 'REJECT', status: ApplicationStatus.REJECTED },
+        ];
+      default:
+        return [];
+    }
+  }
+
+  updateStatus(
+    application: DayCareApplicationDto,
+    status: ApplicationStatus,
+  ): void {
+    console.log(
+      `Updating application ID ${application.id} status from ${application.status} to ${status}`,
+    );
+    this.statusUpdateError = '';
+    const applicationId = application.id;
+    if (
+      applicationId === undefined ||
+      this.updatingApplicationIds.has(applicationId) ||
+      application.status === ApplicationStatus.REJECTED ||
+      application.status === status
+    ) {
+      return;
+    }
+
+    const previousStatus = application.status;
+    this.statusUpdateError = '';
+    this.updatingApplicationIds.add(applicationId);
+    this.applicationService
+      .updateApplicationStatus({ ...application, status })
+      .subscribe({
+        next: (savedApplication) => {
+          application.status = savedApplication.status;
+          this.updatingApplicationIds.delete(applicationId);
+          if (
+            this.selectedStatus !== this.allStatuses &&
+            this.selectedStatus !== savedApplication.status
+          ) {
+            this.applications = this.applications.filter(
+              (item) => item !== application,
+            );
+          }
+        },
+        error: () => {
+          application.status = previousStatus;
+          this.updatingApplicationIds.delete(applicationId);
+          this.statusUpdateError =
+            'Unable to update the application status. Please try again.';
+        },
+      });
   }
 }

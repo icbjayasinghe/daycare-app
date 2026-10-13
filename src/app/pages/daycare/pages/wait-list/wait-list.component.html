@@ -25,10 +25,7 @@
       (change)="onStatusChange($event)"
     >
       <option [value]="allStatuses">All</option>
-      <option
-        *ngFor="let status of applicationStatuses"
-        [value]="status"
-      >
+      <option *ngFor="let status of applicationStatuses" [value]="status">
         {{ status }}
       </option>
     </select>
@@ -40,14 +37,17 @@
   <p *ngIf="errorMessage" class="state-message error-message" role="alert">
     {{ errorMessage }}
   </p>
+  <p *ngIf="statusUpdateError" class="state-message error-message" role="alert">
+    {{ statusUpdateError }}
+  </p>
   <p
     *ngIf="!loading && !errorMessage && applications.length === 0"
     class="state-message"
   >
     {{
       selectedStatus === allStatuses
-        ? 'There are no applications for your daycare yet.'
-        : 'There are no ' + selectedStatus + ' applications.'
+        ? "There are no applications for your daycare yet."
+        : "There are no " + selectedStatus + " applications."
     }}
   </p>
 
@@ -71,13 +71,13 @@
           <th scope="row">
             {{ application.child.firstName }} {{ application.child.lastName }}
           </th>
-          <td>{{ application.child.dob | date: 'mediumDate' }}</td>
+          <td>{{ application.child.dob | date: "mediumDate" }}</td>
           <td>{{ application.child.sex }}</td>
           <td>
             {{
               application.appliedAt
-                ? (application.appliedAt | date: 'mediumDate')
-                : '—'
+                ? (application.appliedAt | date: "mediumDate")
+                : "—"
             }}
           </td>
           <td>
@@ -95,6 +95,34 @@
               (click)="openChildProfile(application)"
             >
               View child profile
+            </button>
+            <ng-container *ngIf="getStatusActions(application).length > 0">
+              <button
+                *ngFor="let action of getStatusActions(application)"
+                class="status-action-button"
+                type="button"
+                [disabled]="
+                  action.disabled ||
+                  application.id === undefined ||
+                  updatingApplicationIds.has(application.id)
+                "
+                (click)="updateStatus(application, action.status)"
+              >
+                {{
+                  application.id !== undefined &&
+                  updatingApplicationIds.has(application.id)
+                    ? "Updating..."
+                    : action.label
+                }}
+              </button>
+            </ng-container>
+            <button
+              *ngIf="application.status === ApplicationStatus.REJECTED"
+              type="button"
+              class="status-action-button"
+              disabled
+            >
+              Rejected
             </button>
           </td>
         </tr>

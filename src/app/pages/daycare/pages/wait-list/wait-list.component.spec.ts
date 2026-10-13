@@ -47,13 +47,17 @@ describe('WaitListComponent', () => {
   ];
 
   beforeEach(async () => {
+    applications[0].status = ApplicationStatus.PENDING;
     localStorage.setItem('userEmail', 'daycare@example.com');
     applicationService = jasmine.createSpyObj<ApplicationService>(
       'ApplicationService',
-      ['getMyApplicationsByStatus'],
+      ['getMyApplicationsByStatus', 'updateApplicationStatus'],
     );
     applicationService.getMyApplicationsByStatus.and.returnValue(
       of(applications),
+    );
+    applicationService.updateApplicationStatus.and.callFake((application) =>
+      of(application),
     );
     dialog = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
@@ -148,5 +152,76 @@ describe('WaitListComponent', () => {
       ChildProfileComponent,
       jasmine.objectContaining({ data: applications[0].child }),
     );
+  });
+
+  it('provides status actions for pending, waitlisted, and accepted applications', () => {
+    expect(
+      component
+        .getStatusActions(applications[0])
+        .map((action) => action.label),
+    ).toEqual(['WAITLIST', 'REJECT']);
+
+    applications[0].status = ApplicationStatus.WAITLISTED;
+    expect(
+      component
+        .getStatusActions(applications[0])
+        .map((action) => action.label),
+    ).toEqual(['ACCEPT', 'WAITLISTED', 'REJECTED']);
+
+    applications[0].status = ApplicationStatus.ACCEPTED;
+    expect(
+      component
+        .getStatusActions(applications[0])
+        .map((action) => action.label),
+    ).toEqual(['ENROLL', 'ACCEPT', 'REJECT']);
+  });
+
+  it('does not offer actions for rejected applications', () => {
+    applications[0].status = ApplicationStatus.REJECTED;
+
+    expect(component.getStatusActions(applications[0])).toEqual([]);
+  });
+
+  it('clicking a status action submits the selected status', () => {
+    fixture.detectChanges();
+    const waitlistButton = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        '.status-action-button',
+      ) as NodeListOf<HTMLButtonElement>,
+    ).find((button) => button.textContent?.trim() === 'WAITLIST');
+
+    expect(waitlistButton).toBeTruthy();
+    waitlistButton?.click();
+
+    expect(applicationService.updateApplicationStatus).toHaveBeenCalledWith(
+      jasmine.objectContaining({ status: ApplicationStatus.WAITLISTED }),
+    );
+  });
+
+  it('updates application status and removes it from the selected status filter', () => {
+    component.updateStatus(applications[0], ApplicationStatus.WAITLISTED);
+
+    expect(applicationService.updateApplicationStatus).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        id: 12,
+        status: ApplicationStatus.WAITLISTED,
+      }),
+    );
+    expect(applications[0].status).toBe(ApplicationStatus.WAITLISTED);
+    expect(component.applications).not.toContain(applications[0]);
+  });
+
+  it('keeps the existing status and displays an error when update fails', () => {
+    applicationService.updateApplicationStatus.and.returnValue(
+      throwError(() => new Error('Request failed')),
+    );
+
+    component.updateStatus(applications[0], ApplicationStatus.REJECTED);
+
+    expect(applications[0].status).toBe(ApplicationStatus.PENDING);
+    expect(component.statusUpdateError).toBe(
+      'Unable to update the application status. Please try again.',
+    );
+    expect(component.updatingApplicationIds.size).toBe(0);
   });
 });

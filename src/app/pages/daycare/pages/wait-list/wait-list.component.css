@@ -163,6 +163,34 @@ tbody tr:last-child td {
   outline-offset: 2px;
 }
 
+.status-action-button {
+  min-height: 36px;
+  margin-left: 8px;
+  padding: 0 12px;
+  border: 1px solid #24664f;
+  border-radius: 4px;
+  background: #24664f;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.status-action-button:hover:not(:disabled) {
+  background: #1b503e;
+}
+
+.status-action-button:disabled {
+  border-color: #cbd8d1;
+  background: #eef1ef;
+  color: #718079;
+  cursor: not-allowed;
+}
+
+.status-action-button:focus-visible {
+  outline: 2px solid #24664f;
+  outline-offset: 2px;
+}
+
 .state-message {
   padding: 12px 14px;
   border-radius: 4px;
