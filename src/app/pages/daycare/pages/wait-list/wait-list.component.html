@@ -63,6 +63,7 @@
           <th scope="col">Sex</th>
           <th scope="col">Requested on</th>
           <th scope="col">Status</th>
+          <th scope="col">Inquire</th>
         </tr>
       </thead>
       <tbody>
@@ -86,6 +87,15 @@
             >
               {{ application.status }}
             </span>
+          </td>
+          <td class="action-cell">
+            <button
+              type="button"
+              class="view-child-button"
+              (click)="openChildProfile(application)"
+            >
+              View child profile
+            </button>
           </td>
         </tr>
       </tbody>

@@ -4,6 +4,8 @@ import {
   DayCareApplicationDto,
 } from 'src/app/models/daycare-application.model';
 import { ApplicationService } from 'src/app/services/application.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ChildProfileComponent } from '../../dialog/child-profile/child-profile.component';
 
 @Component({
   selector: 'app-wait-list',
@@ -25,7 +27,10 @@ export class WaitListComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  constructor(private readonly applicationService: ApplicationService) {}
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.loadApplications();
@@ -76,5 +81,12 @@ export class WaitListComponent implements OnInit {
 
   getStatusClass(status: ApplicationStatus): string {
     return `status-${status.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  }
+
+  openChildProfile(application: DayCareApplicationDto): void {
+    this.dialog.open(ChildProfileComponent, {
+      data: application.child,
+      width: 'min(560px, 90vw)',
+    });
   }
 }

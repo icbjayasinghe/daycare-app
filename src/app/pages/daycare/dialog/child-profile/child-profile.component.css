@@ -1,0 +1,27 @@
+.profile-details {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 10px 16px;
+  margin: 0 0 20px;
+}
+
+h3 {
+  margin: 8px 0 12px;
+  color: #24664f;
+  font-size: 16px;
+}
+
+dt {
+  color: #718079;
+}
+
+dd {
+  overflow-wrap: anywhere;
+  margin: 0;
+  color: #20302c;
+  font-weight: 600;
+}
+
+.error-message {
+  color: #8f342b;
+}

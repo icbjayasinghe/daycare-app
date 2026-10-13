@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Child and parent profile</h2>
+
+<mat-dialog-content>
+  <section aria-labelledby="child-details-heading">
+    <h3 id="child-details-heading">Child details</h3>
+    <dl class="profile-details">
+      <dt>Name</dt>
+      <dd>{{ child.firstName }} {{ child.lastName }}</dd>
+      <dt>Date of birth</dt>
+      <dd>{{ child.dob | date: 'mediumDate' }}</dd>
+      <dt>Sex</dt>
+      <dd>{{ child.sex }}</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="parent-details-heading">
+    <h3 id="parent-details-heading">Parent details</h3>
+    <p *ngIf="loadingParent" role="status">Loading parent details...</p>
+    <p *ngIf="parentError" class="error-message" role="alert">
+      {{ parentError }}
+    </p>
+
+    <ng-container *ngIf="parent as parentDetails">
+      <dl class="profile-details">
+        <dt>Name</dt>
+        <dd>{{ parentDetails.firstName }} {{ parentDetails.lastName }}</dd>
+        <dt>Email</dt>
+        <dd>{{ parentDetails.email }}</dd>
+        <dt>Phone</dt>
+        <dd>{{ parentDetails.phone || 'Not provided' }}</dd>
+      </dl>
+
+      <h3>Parent address</h3>
+      <dl class="profile-details">
+        <dt>Apartment</dt>
+        <dd>{{ parentDetails.address?.apartment || 'Not provided' }}</dd>
+        <dt>Street address</dt>
+        <dd>{{ parentDetails.address?.address || 'Not provided' }}</dd>
+        <dt>City</dt>
+        <dd>{{ parentDetails.address?.city || 'Not provided' }}</dd>
+        <dt>State / province</dt>
+        <dd>{{ parentDetails.address?.state || 'Not provided' }}</dd>
+        <dt>Postal code</dt>
+        <dd>{{ parentDetails.address?.postalCode || 'Not provided' }}</dd>
+        <dt>Country</dt>
+        <dd>{{ parentDetails.address?.country || 'Not provided' }}</dd>
+      </dl>
+    </ng-container>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

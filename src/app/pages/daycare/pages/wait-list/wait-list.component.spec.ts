@@ -1,18 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
 import {
   ApplicationStatus,
   DayCareApplicationDto,
 } from 'src/app/models/daycare-application.model';
 import { ApplicationService } from 'src/app/services/application.service';
+import { MaterialModule } from 'src/app/shared/material.module';
 
+import { ChildProfileComponent } from '../../dialog/child-profile/child-profile.component';
 import { WaitListComponent } from './wait-list.component';
 
 describe('WaitListComponent', () => {
   let component: WaitListComponent;
   let fixture: ComponentFixture<WaitListComponent>;
   let applicationService: jasmine.SpyObj<ApplicationService>;
+  let dialog: jasmine.SpyObj<MatDialog>;
   const applications: DayCareApplicationDto[] = [
     {
       id: 12,
@@ -51,12 +55,14 @@ describe('WaitListComponent', () => {
     applicationService.getMyApplicationsByStatus.and.returnValue(
       of(applications),
     );
+    dialog = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
 
     await TestBed.configureTestingModule({
       declarations: [WaitListComponent],
-      imports: [CommonModule],
+      imports: [CommonModule, MaterialModule],
       providers: [
         { provide: ApplicationService, useValue: applicationService },
+        { provide: MatDialog, useValue: dialog },
       ],
     }).compileComponents();
 
@@ -132,6 +138,15 @@ describe('WaitListComponent', () => {
       '',
       'daycare@example.com',
       '',
+    );
+  });
+
+  it('opens the child profile dialog with the selected application child', () => {
+    component.openChildProfile(applications[0]);
+
+    expect(dialog.open).toHaveBeenCalledWith(
+      ChildProfileComponent,
+      jasmine.objectContaining({ data: applications[0].child }),
     );
   });
 });

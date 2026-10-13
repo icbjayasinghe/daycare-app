@@ -30,4 +30,14 @@ export class ParentService {
       profile,
     );
   }
+
+  getParentByChildId(id: number): Observable<ParentDto> {
+    return this.http.get<ParentDto>(
+      `${environment.baseUrl}/api/parent/byChildId/${id}`,
+    );
+  }
+
+  getParentByChild(childId: number): Observable<ParentDto> {
+    return this.getParentByChildId(childId);
+  }
 }
