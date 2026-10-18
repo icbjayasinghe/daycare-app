@@ -34,4 +34,26 @@ describe('AuthServiceService', () => {
 
     expect(localStorage.getItem('userEmail')).toBeNull();
   });
+
+  it('establishes an admin session only for admin roles', () => {
+    const adminToken = `header.${btoa(JSON.stringify({ role: 'ADMIN' }))}.signature`;
+    const parentToken = `header.${btoa(JSON.stringify({ role: 'PARENT' }))}.signature`;
+
+    expect(
+      service.establishAdminSession(
+        { accessToken: adminToken },
+        'admin@example.com',
+      ),
+    ).toBeTrue();
+    expect(localStorage.getItem('userEmail')).toBe('admin@example.com');
+
+    expect(
+      service.establishAdminSession(
+        { accessToken: parentToken },
+        'parent@example.com',
+      ),
+    ).toBeFalse();
+    expect(localStorage.getItem('accessToken')).toBeNull();
+    expect(localStorage.getItem('userEmail')).toBeNull();
+  });
 });

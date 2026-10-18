@@ -71,6 +71,15 @@ export class AuthServiceService {
     return true;
   }
 
+  establishAdminSession(response: LoginResponse, email: string): boolean {
+    if (!this.establishSession(response, email) || !this.hasRole('ADMIN')) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
   establishSession(response: LoginResponse, email: string): boolean {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.emailKey);

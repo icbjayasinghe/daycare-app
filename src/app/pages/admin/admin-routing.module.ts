@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { DashboardComponent } from '../admin/pages/dashboard/dashboard.component';
 import AuthGuard from 'src/app/guards/auth.guard';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'login', component: AdminLoginComponent },
       {
         path: 'dashboard',
         component: DashboardComponent,
