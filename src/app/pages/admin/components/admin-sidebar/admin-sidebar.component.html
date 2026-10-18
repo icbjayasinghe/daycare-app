@@ -1,1 +1,34 @@
-<p>admin-sidebar works!</p>
+<aside class="admin-sidebar" aria-label="Admin navigation">
+  <a class="brand" routerLink="/pages/admin/dashboard">TipToe Admin</a>
+
+  <nav>
+    <a
+      class="nav-link"
+      routerLink="/pages/admin/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Dashboard
+    </a>
+
+    <details class="nav-group" open>
+      <summary>Daycare</summary>
+      <div class="subnav">
+        <a
+          class="nav-link"
+          routerLink="/pages/admin/daycare/requests"
+          routerLinkActive="active"
+        >
+          Requests
+        </a>
+        <a
+          class="nav-link"
+          routerLink="/pages/admin/daycare/registered"
+          routerLinkActive="active"
+        >
+          Registered
+        </a>
+      </div>
+    </details>
+  </nav>
+</aside>

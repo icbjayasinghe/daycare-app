@@ -7,19 +7,18 @@ import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
-
+import { DaycareRequestsComponent } from './daycare-requests/daycare-requests.component';
+import { DaycareRegisteredComponent } from './daycare-registered/daycare-registered.component';
 
 @NgModule({
   declarations: [
     AdminSidebarComponent,
     DashboardComponent,
     AdminLayoutComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    DaycareRequestsComponent,
+    DaycareRegisteredComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    AdminRoutingModule
-  ]
+  imports: [CommonModule, ReactiveFormsModule, AdminRoutingModule],
 })
-export class AdminModule { }
+export class AdminModule {}

@@ -1,0 +1,74 @@
+.admin-sidebar {
+  box-sizing: border-box;
+  width: 248px;
+  min-height: 100vh;
+  padding: 24px 16px;
+  background: #203b32;
+  color: #f5faf7;
+}
+
+.brand {
+  display: block;
+  margin: 0 10px 32px;
+  color: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+nav {
+  display: grid;
+  gap: 6px;
+}
+
+.nav-link,
+.nav-group summary {
+  display: block;
+  padding: 11px 12px;
+  border-radius: 6px;
+  color: #e2eee7;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-group summary {
+  font-weight: 600;
+  list-style-position: inside;
+}
+
+.nav-link:hover,
+.nav-group summary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+  background: #d8ebdf;
+  color: #203b32;
+  font-weight: 700;
+}
+
+.subnav {
+  display: grid;
+  gap: 4px;
+  margin: 4px 0 6px 14px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(226, 238, 231, 0.28);
+}
+
+.subnav .nav-link {
+  padding: 9px 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .admin-sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .brand {
+    margin-bottom: 14px;
+  }
+}
