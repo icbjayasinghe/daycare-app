@@ -22,6 +22,7 @@ export interface DaycareProfile {
   telephone: string;
   website?: string;
   withOwnPortal?: boolean;
+  status?: DaycareStatus;
   owners: DaycareProfileOwner[];
   address: DaycareAddress;
 }

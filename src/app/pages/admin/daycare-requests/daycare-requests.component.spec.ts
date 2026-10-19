@@ -18,6 +18,7 @@ describe('DaycareRequestsComponent', () => {
       id: 14,
       name: 'Little Oaks',
       telephone: '555-0102',
+      status: DaycareStatus.PENDING,
       owners: [
         {
           firstName: 'Alex',
@@ -38,11 +39,13 @@ describe('DaycareRequestsComponent', () => {
   ];
 
   beforeEach(async () => {
+    daycares[0].status = DaycareStatus.PENDING;
     daycareService = jasmine.createSpyObj<DaycareService>(
       'DaycareService',
-      ['getDaycares'],
+      ['getDaycares', 'updateMyDaycare'],
     );
     daycareService.getDaycares.and.returnValue(of(daycares));
+    daycareService.updateMyDaycare.and.callFake((daycare) => of(daycare));
 
     await TestBed.configureTestingModule({
       declarations: [DaycareRequestsComponent],
@@ -93,5 +96,33 @@ describe('DaycareRequestsComponent', () => {
       'Unable to load pending daycare requests. Please try again.',
     );
     expect(fixture.nativeElement.querySelector('.retry-button')).toBeTruthy();
+  });
+
+  it('approves a daycare and removes it from the pending list', () => {
+    component.updateStatus(daycares[0], DaycareStatus.APPROVED);
+
+    expect(daycareService.updateMyDaycare).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        id: 14,
+        status: DaycareStatus.APPROVED,
+      }),
+    );
+    expect(daycares[0].status).toBe(DaycareStatus.APPROVED);
+    expect(component.daycares).not.toContain(daycares[0]);
+  });
+
+  it('preserves the pending daycare and displays an error when the update fails', () => {
+    daycareService.updateMyDaycare.and.returnValue(
+      throwError(() => new Error('Request failed')),
+    );
+
+    component.updateStatus(daycares[0], DaycareStatus.REJECTED);
+
+    expect(daycares[0].status).toBe(DaycareStatus.PENDING);
+    expect(component.daycares).toContain(daycares[0]);
+    expect(component.statusUpdateError).toBe(
+      'Unable to update the daycare status. Please try again.',
+    );
+    expect(component.updatingDaycareIds.size).toBe(0);
   });
 });
