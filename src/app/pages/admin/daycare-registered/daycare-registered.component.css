@@ -32,6 +32,30 @@ h1 {
   color: #718079;
 }
 
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.filter-row label {
+  color: #52665c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.filter-row select {
+  min-width: 190px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #cbd8d1;
+  border-radius: 4px;
+  background: #fff;
+  color: #20302c;
+  font: inherit;
+}
+
 .retry-button {
   min-height: 40px;
   padding: 0 14px;
@@ -84,6 +108,67 @@ tbody tr:last-child td {
 .status-approved {
   background: #e4f2e9;
   color: #24664f;
+}
+
+.status-deactivated {
+  background: #eef1ef;
+  color: #52665c;
+}
+
+.action-cell {
+  white-space: nowrap;
+}
+
+.deactivate-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #e1c5c1;
+  border-radius: 4px;
+  background: #fff;
+  color: #8f342b;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.deactivate-button:hover:not(:disabled) {
+  background: #fff0ed;
+}
+
+.deactivate-button:focus-visible {
+  outline: 2px solid #8f342b;
+  outline-offset: 2px;
+}
+
+.deactivate-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.activate-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #b9d0c4;
+  border-radius: 4px;
+  background: #f5faf7;
+  color: #24664f;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.activate-button:hover:not(:disabled) {
+  background: #e4f2e9;
+}
+
+.activate-button:focus-visible {
+  outline: 2px solid #24664f;
+  outline-offset: 2px;
+}
+
+.activate-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .state-message {

@@ -11,27 +11,43 @@
       *ngIf="errorMessage"
       type="button"
       class="retry-button"
-      (click)="loadApprovedDaycares()"
+      (click)="loadDaycares()"
     >
       Retry
     </button>
   </header>
 
+  <div class="filter-row">
+    <label for="daycare-status-filter">Show</label>
+    <select
+      id="daycare-status-filter"
+      [value]="selectedStatus"
+      (change)="onFilterChange($event)"
+    >
+      <option [value]="allStatuses">All daycares</option>
+      <option [value]="approvedStatus">Approved daycares</option>
+    </select>
+  </div>
+
   <p *ngIf="loading" class="state-message" role="status">
-    Loading registered daycares...
+    Loading daycares...
   </p>
   <p *ngIf="errorMessage" class="state-message error-message" role="alert">
     {{ errorMessage }}
   </p>
   <p
-    *ngIf="!loading && !errorMessage && daycares.length === 0"
+    *ngIf="!loading && !errorMessage && filteredDaycares.length === 0"
     class="state-message"
   >
-    There are no approved daycares yet.
+    {{
+      selectedStatus === allStatuses
+        ? "There are no daycares yet."
+        : "There are no approved daycares yet."
+    }}
   </p>
 
   <div
-    *ngIf="!loading && !errorMessage && daycares.length > 0"
+    *ngIf="!loading && !errorMessage && filteredDaycares.length > 0"
     class="table-container"
   >
     <table>
@@ -43,22 +59,75 @@
           <th scope="col">Telephone</th>
           <th scope="col">Location</th>
           <th scope="col">Status</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let daycare of daycares">
+        <tr *ngFor="let daycare of filteredDaycares">
           <th scope="row">{{ daycare.name }}</th>
           <td>{{ getOwnerName(daycare) }}</td>
           <td>{{ getOwnerEmail(daycare) }}</td>
           <td>{{ daycare.telephone || "—" }}</td>
           <td>{{ getLocation(daycare) }}</td>
           <td>
-            <span class="status-badge status-approved">
+            <span
+              class="status-badge"
+              [ngClass]="
+                'status-' +
+                (daycare.status || approvedStatus).toLowerCase()
+              "
+            >
               {{ daycare.status || approvedStatus }}
             </span>
+          </td>
+          <td class="action-cell">
+            <button
+              *ngIf="
+                (daycare.status || approvedStatus) === approvedStatus
+              "
+              type="button"
+              class="deactivate-button"
+              [disabled]="
+                daycare.id === undefined ||
+                updatingDaycareIds.has(daycare.id)
+              "
+              (click)="deactivateDaycare(daycare)"
+            >
+              {{
+                daycare.id !== undefined &&
+                updatingDaycareIds.has(daycare.id)
+                  ? "Deactivating..."
+                  : "Deactivate"
+              }}
+            </button>
+            <button
+              *ngIf="daycare.status === deactivatedStatus"
+              type="button"
+              class="activate-button"
+              [disabled]="
+                daycare.id === undefined ||
+                updatingDaycareIds.has(daycare.id)
+              "
+              (click)="activateDaycare(daycare)"
+            >
+              {{
+                daycare.id !== undefined &&
+                updatingDaycareIds.has(daycare.id)
+                  ? "Activating..."
+                  : "Activate"
+              }}
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <p
+    *ngIf="statusUpdateError"
+    class="state-message error-message"
+    role="alert"
+  >
+    {{ statusUpdateError }}
+  </p>
 </main>
