@@ -1,3 +1,10 @@
+export enum DaycareStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  DEACTIVATED = 'DEACTIVATED',
+}
+
 export interface DaycareDto {
   id: number;
   name: string;
@@ -6,6 +13,7 @@ export interface DaycareDto {
   withOwnPortal?: boolean;
   owners: DaycareOwner[];
   address: DaycareAddress;
+  status: DaycareStatus;
 }
 
 export interface DaycareProfile {

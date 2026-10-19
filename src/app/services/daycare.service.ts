@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DaycareDto, DaycareProfile } from '../models/daycare.model';
+import {
+  DaycareDto,
+  DaycareProfile,
+  DaycareStatus,
+} from '../models/daycare.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +22,12 @@ export class DaycareService {
     return this.http.post(`${url}`, daycareData, { headers });
   }
 
-  getDaycares(): Observable<DaycareProfile[]> {
-    return this.http.get<DaycareProfile[]>(`${environment.baseUrl}/api/daycare`);
+  getDaycares(status?: DaycareStatus): Observable<DaycareProfile[]> {
+    let url = `${environment.baseUrl}/api/daycare`;
+    if (status) {
+      url += `?status=${status}`;
+    }
+    return this.http.get<DaycareProfile[]>(url);
   }
 
   getMyDaycare(email: string): Observable<DaycareProfile> {

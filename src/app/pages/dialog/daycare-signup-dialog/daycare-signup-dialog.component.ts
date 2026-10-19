@@ -1,7 +1,7 @@
 import { Component, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DaycareDto } from 'src/app/models/daycare.model';
+import { DaycareDto, DaycareStatus } from 'src/app/models/daycare.model';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { DaycareService } from 'src/app/services/daycare.service';
 import { Router } from '@angular/router';
@@ -100,6 +100,7 @@ export class DaycareSignupDialogComponent {
       telephone: formValue.telephone,
       owners: [{ ...formValue.owners, userType: 0 }],
       address: formValue.address,
+      status: DaycareStatus.PENDING,
     };
 
     console.log('Registering daycare:', daycareData);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DaycareProfile } from 'src/app/models/daycare.model';
+import { DaycareProfile, DaycareStatus } from 'src/app/models/daycare.model';
 import { DaycareService } from 'src/app/services/daycare.service';
 import { ApplyChildDialogComponent } from '../../dialog/apply-child-dialog/apply-child-dialog.component';
 
@@ -26,7 +26,7 @@ export class ParentDaycaresComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.daycareService.getDaycares().subscribe({
+    this.daycareService.getDaycares(DaycareStatus.APPROVED).subscribe({
       next: (daycares) => {
         this.daycares = daycares;
         this.loading = false;
