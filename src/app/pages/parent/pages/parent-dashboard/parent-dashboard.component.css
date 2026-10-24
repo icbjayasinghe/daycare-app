@@ -47,6 +47,20 @@ h1 {
   font-size: 20px;
 }
 
+.enrollments-section {
+  margin-bottom: 36px;
+}
+
+.congratulations-message {
+  margin: 0 0 16px;
+  padding: 16px 18px;
+  border: 1px solid #c6e2d0;
+  border-radius: 4px;
+  background: #eaf6ee;
+  color: #24664f;
+  font-weight: 600;
+}
+
 .retry-button {
   padding: 8px 14px;
   border: 1px solid #cbd8d1;

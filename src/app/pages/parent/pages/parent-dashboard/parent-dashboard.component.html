@@ -5,6 +5,71 @@
     <p>Track the status of your applications and the children they are for.</p>
   </header>
 
+  <section
+    *ngIf="activeEnrollments.length > 0 || enrollmentsLoading || enrollmentsErrorMessage"
+    class="enrollments-section"
+    aria-labelledby="enrollments-heading"
+  >
+    <div class="section-heading">
+      <h2 id="enrollments-heading">Your active enrollments</h2>
+      <button
+        *ngIf="enrollmentsErrorMessage"
+        type="button"
+        class="retry-button"
+        (click)="loadActiveEnrollments()"
+      >
+        Retry
+      </button>
+    </div>
+
+    <p *ngIf="enrollmentsLoading" class="state-message" role="status">
+      Loading active enrollments...
+    </p>
+    <p
+      *ngIf="enrollmentsErrorMessage"
+      class="state-message error-message"
+      role="alert"
+    >
+      {{ enrollmentsErrorMessage }}
+    </p>
+    <ng-container
+      *ngIf="!enrollmentsLoading && !enrollmentsErrorMessage && activeEnrollments.length > 0"
+    >
+      <p class="congratulations-message" role="status">
+        Congratulations! Your child has an active daycare enrollment.
+      </p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Daycare</th>
+              <th scope="col">Child</th>
+              <th scope="col">Enrollment date</th>
+              <th scope="col">Schedule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enrollment of activeEnrollments">
+              <th scope="row">{{ enrollment.daycare?.name || "—" }}</th>
+              <td>
+                {{ enrollment.child?.firstName || "" }}
+                {{ enrollment.child?.lastName || "" }}
+              </td>
+              <td>
+                {{
+                  enrollment.enrollmentDate
+                    ? (enrollment.enrollmentDate | date: "mediumDate")
+                    : "—"
+                }}
+              </td>
+              <td>{{ enrollment.schedule || "—" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </section>
+
   <section class="applications-section" aria-labelledby="applications-heading">
     <div class="section-heading">
       <h2 id="applications-heading">Applied daycares</h2>
@@ -53,8 +118,8 @@
             <td>
               {{
                 application.appliedAt
-                  ? (application.appliedAt | date: 'mediumDate')
-                  : '—'
+                  ? (application.appliedAt | date: "mediumDate")
+                  : "—"
               }}
             </td>
             <td>
