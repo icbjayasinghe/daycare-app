@@ -10,6 +10,7 @@ import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile
 import { WaitListComponent } from './pages/wait-list/wait-list.component';
 import { ChildProfileComponent } from './dialog/child-profile/child-profile.component';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { CurrentStudentComponent } from './pages/current-student/current-student.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
     DaycareProfileComponent,
     WaitListComponent,
     ChildProfileComponent,
+    CurrentStudentComponent,
   ],
   imports: [
     CommonModule,

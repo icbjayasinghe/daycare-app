@@ -5,6 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile.component';
 import AuthGuard from 'src/app/guards/auth.guard';
 import { WaitListComponent } from './pages/wait-list/wait-list.component';
+import { CurrentStudentComponent } from './pages/current-student/current-student.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,12 @@ const routes: Routes = [
       {
         path: 'waiting-list',
         component: WaitListComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'current-students',
+        component: CurrentStudentComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },
