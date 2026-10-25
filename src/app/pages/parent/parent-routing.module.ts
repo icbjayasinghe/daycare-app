@@ -6,6 +6,7 @@ import AuthGuard from 'src/app/guards/auth.guard';
 import { ParentDaycaresComponent } from './pages/parent-daycares/parent-daycares.component';
 import { ParentChildrenComponent } from './pages/parent-children/parent-children.component';
 import { ParentProfileComponent } from './pages/parent-profile/parent-profile.component';
+import { ParentApplicationsComponent } from './pages/parent-applications/parent-applications.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,12 @@ const routes: Routes = [
       {
         path: 'children',
         component: ParentChildrenComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PARENT'] },
+      },
+      {
+        path: 'applications',
+        component: ParentApplicationsComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PARENT'] },
       },
