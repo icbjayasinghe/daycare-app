@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabGroup } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import {
   ApplicationStatus,
@@ -8,6 +11,11 @@ import {
 } from 'src/app/models/daycare-application.model';
 import { ApplicationService } from 'src/app/services/application.service';
 import { MaterialModule } from 'src/app/shared/material.module';
+import {
+  DayCareEnrollmentDto,
+  EnrollmentStatus,
+} from 'src/app/models/enrollment.model';
+import { EnrollmentService } from 'src/app/services/enrollment.service';
 
 import { ChildProfileComponent } from '../../dialog/child-profile/child-profile.component';
 import { WaitListComponent } from './wait-list.component';
@@ -17,6 +25,7 @@ describe('WaitListComponent', () => {
   let fixture: ComponentFixture<WaitListComponent>;
   let applicationService: jasmine.SpyObj<ApplicationService>;
   let dialog: jasmine.SpyObj<MatDialog>;
+  let enrollmentService: jasmine.SpyObj<EnrollmentService>;
   const applications: DayCareApplicationDto[] = [
     {
       id: 12,
@@ -45,6 +54,15 @@ describe('WaitListComponent', () => {
       appliedAt: '2026-10-10T12:00:00Z',
     },
   ];
+  const enrollments: DayCareEnrollmentDto[] = [
+    {
+      id: 21,
+      child: applications[0].child,
+      status: EnrollmentStatus.ACTIVE,
+      enrollmentDate: '2026-10-15',
+      schedule: 'Weekdays',
+    },
+  ];
 
   beforeEach(async () => {
     applications[0].status = ApplicationStatus.PENDING;
@@ -60,13 +78,19 @@ describe('WaitListComponent', () => {
       of(application),
     );
     dialog = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
+    enrollmentService = jasmine.createSpyObj<EnrollmentService>(
+      'EnrollmentService',
+      ['getMyEnrollmentsByStatus'],
+    );
+    enrollmentService.getMyEnrollmentsByStatus.and.returnValue(of(enrollments));
 
     await TestBed.configureTestingModule({
       declarations: [WaitListComponent],
-      imports: [CommonModule, MaterialModule],
+      imports: [CommonModule, MaterialModule, NoopAnimationsModule],
       providers: [
         { provide: ApplicationService, useValue: applicationService },
         { provide: MatDialog, useValue: dialog },
+        { provide: EnrollmentService, useValue: enrollmentService },
       ],
     }).compileComponents();
 
@@ -90,6 +114,26 @@ describe('WaitListComponent', () => {
     expect(component.applications).toEqual(applications);
     expect(fixture.nativeElement.textContent).toContain('Sam Jones');
     expect(fixture.nativeElement.textContent).toContain('PENDING');
+  });
+
+  it('loads daycare enrollments and provides the two tabs', async () => {
+    expect(enrollmentService.getMyEnrollmentsByStatus).toHaveBeenCalledWith(
+      '',
+      'daycare@example.com',
+      '',
+    );
+    expect(component.enrollments).toEqual(enrollments);
+    expect(fixture.nativeElement.textContent).toContain('Applications');
+    expect(fixture.nativeElement.textContent).toContain('Enrolments');
+
+    const tabGroup = fixture.debugElement.query(
+      By.directive(MatTabGroup),
+    ).componentInstance as MatTabGroup;
+    tabGroup.selectedIndex = 1;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Weekdays');
   });
 
   it('shows an error when requested applications fail to load', () => {

@@ -17,116 +17,202 @@
     </button>
   </header>
 
-  <div class="filter-row">
-    <label for="application-status-filter">Filter by status</label>
-    <select
-      id="application-status-filter"
-      [value]="selectedStatus"
-      (change)="onStatusChange($event)"
-    >
-      <option [value]="allStatuses">All</option>
-      <option *ngFor="let status of applicationStatuses" [value]="status">
-        {{ status }}
-      </option>
-    </select>
-  </div>
+  <mat-tab-group aria-label="Daycare applications and enrollments">
+    <mat-tab label="Applications">
+      <div class="filter-row">
+        <label for="application-status-filter">Filter by status</label>
+        <select
+          id="application-status-filter"
+          [value]="selectedStatus"
+          (change)="onStatusChange($event)"
+        >
+          <option [value]="allStatuses">All</option>
+          <option *ngFor="let status of applicationStatuses" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
 
-  <p *ngIf="loading" class="state-message" role="status">
-    Loading requested applications...
-  </p>
-  <p *ngIf="errorMessage" class="state-message error-message" role="alert">
-    {{ errorMessage }}
-  </p>
-  <p *ngIf="statusUpdateError" class="state-message error-message" role="alert">
-    {{ statusUpdateError }}
-  </p>
-  <p
-    *ngIf="!loading && !errorMessage && applications.length === 0"
-    class="state-message"
-  >
-    {{
-      selectedStatus === allStatuses
-        ? "There are no applications for your daycare yet."
-        : "There are no " + selectedStatus + " applications."
-    }}
-  </p>
+      <button
+        *ngIf="errorMessage"
+        type="button"
+        class="retry-button"
+        (click)="loadApplications()"
+      >
+        Retry
+      </button>
+      <p *ngIf="loading" class="state-message" role="status">
+        Loading requested applications...
+      </p>
+      <p *ngIf="errorMessage" class="state-message error-message" role="alert">
+        {{ errorMessage }}
+      </p>
+      <p *ngIf="statusUpdateError" class="state-message error-message" role="alert">
+        {{ statusUpdateError }}
+      </p>
+      <p
+        *ngIf="!loading && !errorMessage && applications.length === 0"
+        class="state-message"
+      >
+        {{
+          selectedStatus === allStatuses
+            ? "There are no applications for your daycare yet."
+            : "There are no " + selectedStatus + " applications."
+        }}
+      </p>
 
-  <div
-    *ngIf="!loading && !errorMessage && applications.length > 0"
-    class="table-container"
-  >
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Child</th>
-          <th scope="col">Date of birth</th>
-          <th scope="col">Sex</th>
-          <th scope="col">Requested on</th>
-          <th scope="col">Status</th>
-          <th scope="col">Inquire</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let application of applications">
-          <th scope="row">
-            {{ application.child.firstName }} {{ application.child.lastName }}
-          </th>
-          <td>{{ application.child.dob | date: "mediumDate" }}</td>
-          <td>{{ application.child.sex }}</td>
-          <td>
-            {{
-              application.appliedAt
-                ? (application.appliedAt | date: "mediumDate")
-                : "—"
-            }}
-          </td>
-          <td>
-            <span
-              class="status-badge"
-              [ngClass]="getStatusClass(application.status)"
-            >
-              {{ application.status }}
-            </span>
-          </td>
-          <td class="action-cell">
-            <button
-              type="button"
-              class="view-child-button"
-              (click)="openChildProfile(application)"
-            >
-              View child profile
-            </button>
-            <ng-container *ngIf="getStatusActions(application).length > 0">
-              <button
-                *ngFor="let action of getStatusActions(application)"
-                class="status-action-button"
-                type="button"
-                [disabled]="
-                  action.disabled ||
-                  application.id === undefined ||
-                  updatingApplicationIds.has(application.id)
-                "
-                (click)="updateStatus(application, action.status)"
-              >
+      <div
+        *ngIf="!loading && !errorMessage && applications.length > 0"
+        class="table-container"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Child</th>
+              <th scope="col">Date of birth</th>
+              <th scope="col">Sex</th>
+              <th scope="col">Requested on</th>
+              <th scope="col">Status</th>
+              <th scope="col">Inquire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let application of applications">
+              <th scope="row">
+                {{ application.child.firstName }} {{ application.child.lastName }}
+              </th>
+              <td>{{ application.child.dob | date: "mediumDate" }}</td>
+              <td>{{ application.child.sex }}</td>
+              <td>
                 {{
-                  application.id !== undefined &&
-                  updatingApplicationIds.has(application.id)
-                    ? "Updating..."
-                    : action.label
+                  application.appliedAt
+                    ? (application.appliedAt | date: "mediumDate")
+                    : "—"
                 }}
-              </button>
-            </ng-container>
-            <button
-              *ngIf="application.status === ApplicationStatus.REJECTED"
-              type="button"
-              class="status-action-button"
-              disabled
-            >
-              Rejected
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+              </td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(application.status)"
+                >
+                  {{ application.status }}
+                </span>
+              </td>
+              <td class="action-cell">
+                <button
+                  type="button"
+                  class="view-child-button"
+                  (click)="openChildProfile(application)"
+                >
+                  View child profile
+                </button>
+                <ng-container *ngIf="getStatusActions(application).length > 0">
+                  <button
+                    *ngFor="let action of getStatusActions(application)"
+                    class="status-action-button"
+                    type="button"
+                    [disabled]="
+                      action.disabled ||
+                      application.id === undefined ||
+                      updatingApplicationIds.has(application.id)
+                    "
+                    (click)="updateStatus(application, action.status)"
+                  >
+                    {{
+                      application.id !== undefined &&
+                      updatingApplicationIds.has(application.id)
+                        ? "Updating..."
+                        : action.label
+                    }}
+                  </button>
+                </ng-container>
+                <button
+                  *ngIf="application.status === ApplicationStatus.REJECTED"
+                  type="button"
+                  class="status-action-button"
+                  disabled
+                >
+                  Rejected
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Enrolments">
+      <button
+        *ngIf="enrollmentsErrorMessage"
+        type="button"
+        class="retry-button"
+        (click)="loadEnrollments()"
+      >
+        Retry
+      </button>
+      <p *ngIf="enrollmentsLoading" class="state-message" role="status">
+        Loading enrolments...
+      </p>
+      <p
+        *ngIf="enrollmentsErrorMessage"
+        class="state-message error-message"
+        role="alert"
+      >
+        {{ enrollmentsErrorMessage }}
+      </p>
+      <p
+        *ngIf="!enrollmentsLoading && !enrollmentsErrorMessage && enrollments.length === 0"
+        class="state-message"
+      >
+        There are no enrolments for your daycare yet.
+      </p>
+      <div
+        *ngIf="!enrollmentsLoading && !enrollmentsErrorMessage && enrollments.length > 0"
+        class="table-container"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Child</th>
+              <th scope="col">Enrollment date</th>
+              <th scope="col">End date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Schedule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enrollment of enrollments">
+              <th scope="row">
+                {{ enrollment.child?.firstName || "—" }}
+                {{ enrollment.child?.lastName || "" }}
+              </th>
+              <td>
+                {{
+                  enrollment.enrollmentDate
+                    ? (enrollment.enrollmentDate | date: "mediumDate")
+                    : "—"
+                }}
+              </td>
+              <td>
+                {{
+                  enrollment.endDate
+                    ? (enrollment.endDate | date: "mediumDate")
+                    : "—"
+                }}
+              </td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(enrollment.status)"
+                >
+                  {{ enrollment.status }}
+                </span>
+              </td>
+              <td>{{ enrollment.schedule || "—" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </main>

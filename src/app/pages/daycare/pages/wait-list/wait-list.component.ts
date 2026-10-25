@@ -6,6 +6,8 @@ import {
 import { ApplicationService } from 'src/app/services/application.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChildProfileComponent } from '../../dialog/child-profile/child-profile.component';
+import { DayCareEnrollmentDto } from 'src/app/models/enrollment.model';
+import { EnrollmentService } from 'src/app/services/enrollment.service';
 
 interface StatusAction {
   label: string;
@@ -31,18 +33,47 @@ export class WaitListComponent implements OnInit {
   readonly allStatuses = 'ALL' as const;
   selectedStatus: ApplicationStatus | 'ALL' = ApplicationStatus.PENDING;
   applications: DayCareApplicationDto[] = [];
+  enrollments: DayCareEnrollmentDto[] = [];
   loading = false;
+  enrollmentsLoading = false;
   errorMessage = '';
+  enrollmentsErrorMessage = '';
   statusUpdateError = '';
   readonly updatingApplicationIds = new Set<number>();
 
   constructor(
     private readonly applicationService: ApplicationService,
     private readonly dialog: MatDialog,
+    private readonly enrollmentService: EnrollmentService,
   ) {}
 
   ngOnInit(): void {
     this.loadApplications();
+    this.loadEnrollments();
+  }
+
+  loadEnrollments(): void {
+    if (!this.daycareEmail) {
+      this.enrollmentsErrorMessage =
+        'Unable to identify the signed-in daycare.';
+      return;
+    }
+
+    this.enrollmentsLoading = true;
+    this.enrollmentsErrorMessage = '';
+    this.enrollmentService
+      .getMyEnrollmentsByStatus('', this.daycareEmail, '')
+      .subscribe({
+        next: (enrollments) => {
+          this.enrollments = enrollments;
+          this.enrollmentsLoading = false;
+        },
+        error: () => {
+          this.enrollmentsErrorMessage =
+            'Unable to load daycare enrollments. Please try again.';
+          this.enrollmentsLoading = false;
+        },
+      });
   }
 
   loadApplications(): void {
@@ -88,7 +119,7 @@ export class WaitListComponent implements OnInit {
     this.loadApplications();
   }
 
-  getStatusClass(status: ApplicationStatus): string {
+  getStatusClass(status: string): string {
     return `status-${status.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   }
 
