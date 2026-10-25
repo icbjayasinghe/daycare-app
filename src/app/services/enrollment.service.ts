@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { DayCareEnrollmentDto, EnrollmentStatus } from '../models/enrollment.model';
+import {
+  DayCareEnrollmentDto,
+  EnrollmentStatus,
+} from '../models/enrollment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,5 +39,15 @@ export class EnrollmentService {
         );
       }
     }
+  }
+
+  updateEnrollment(
+    updatedEnrollment: DayCareEnrollmentDto,
+  ): Observable<DayCareEnrollmentDto> {
+    console.log('Updating enrollment:', updatedEnrollment);
+    return this.http.put<DayCareEnrollmentDto>(
+      `${environment.baseUrl}/api/enrollment`,
+      updatedEnrollment,
+    );
   }
 }

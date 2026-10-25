@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import {
   ApplicationStatus,
@@ -24,6 +24,7 @@ describe('ParentApplicationsComponent', () => {
   let applicationService: jasmine.SpyObj<ApplicationService>;
   let enrollmentService: jasmine.SpyObj<EnrollmentService>;
   let dialog: jasmine.SpyObj<MatDialog>;
+  let dialogRef: jasmine.SpyObj<MatDialogRef<ViewEnrollmentDialogComponent>>;
 
   const child = {
     id: 7,
@@ -82,6 +83,12 @@ describe('ParentApplicationsComponent', () => {
     );
     enrollmentService.getMyEnrollmentsByStatus.and.returnValue(of(enrollments));
     dialog = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
+    dialogRef = jasmine.createSpyObj<MatDialogRef<ViewEnrollmentDialogComponent>>(
+      'MatDialogRef',
+      ['afterClosed', 'close'],
+    );
+    dialogRef.afterClosed.and.returnValue(of(undefined));
+    dialog.open.and.returnValue(dialogRef);
 
     await TestBed.configureTestingModule({
       imports: [CommonModule, MatTabsModule, NoopAnimationsModule],

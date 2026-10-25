@@ -1,3 +1,18 @@
+.mat-mdc-dialog-content section {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #dce5df;
+  border-radius: 6px;
+}
+
+.mat-mdc-dialog-content section:nth-of-type(odd) {
+  background: #edf7f0;
+}
+
+.mat-mdc-dialog-content section:nth-of-type(even) {
+  background: #fff;
+}
+
 .details-list {
   display: grid;
   grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.5fr);
@@ -17,9 +32,31 @@
 }
 
 h3 {
-  margin: 8px 0 14px;
+  margin: 0 0 14px;
   color: #20302c;
   font-size: 17px;
+}
+
+.map-frame {
+  display: block;
+  width: 100%;
+  height: 280px;
+  border: 0;
+  border-radius: 4px;
+}
+
+.map-placeholder {
+  padding: 16px;
+  border-radius: 4px;
+  background: #f1f5f2;
+  color: #52665c;
+}
+
+.error-message {
+  padding: 12px 14px;
+  border-radius: 4px;
+  background: #fff0ed;
+  color: #8f342b;
 }
 
 @media (max-width: 480px) {

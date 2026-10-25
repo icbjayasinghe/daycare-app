@@ -84,10 +84,24 @@ export class ParentApplicationsComponent implements OnInit {
   }
 
   viewEnrollment(enrollment: DayCareEnrollmentDto): void {
-    this.dialog.open(ViewEnrollmentDialogComponent, {
-      width: '600px',
-      maxWidth: '95vw',
-      data: enrollment,
-    });
+    this.dialog
+      .open(ViewEnrollmentDialogComponent, {
+        width: '600px',
+        maxWidth: '95vw',
+        data: enrollment,
+      })
+      .afterClosed()
+      .subscribe((updatedEnrollment?: DayCareEnrollmentDto) => {
+        if (!updatedEnrollment) {
+          return;
+        }
+        this.enrollments = this.enrollments.map((currentEnrollment) =>
+          currentEnrollment === enrollment ||
+          (updatedEnrollment.id != null &&
+            currentEnrollment.id === updatedEnrollment.id)
+            ? updatedEnrollment
+            : currentEnrollment,
+        );
+      });
   }
 }
