@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ParentProfileComponent } from './pages/parent-profile/parent-profile.component';
 import { ApplyChildDialogComponent } from './dialog/apply-child-dialog/apply-child-dialog.component';
 import { ParentApplicationsComponent } from './pages/parent-applications/parent-applications.component';
+import { ViewEnrollmentDialogComponent } from './dialog/view-enrollment-dialog/view-enrollment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ParentApplicationsComponent } from './pages/parent-applications/parent-
     ParentProfileComponent,
     ApplyChildDialogComponent,
     ParentApplicationsComponent,
+    ViewEnrollmentDialogComponent,
   ],
   imports: [
     CommonModule,

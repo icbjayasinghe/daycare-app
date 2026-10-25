@@ -1,0 +1,34 @@
+.details-list {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.5fr);
+  gap: 10px 16px;
+  margin: 0 0 24px;
+}
+
+.details-list dt {
+  color: #52665c;
+  font-weight: 600;
+}
+
+.details-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+h3 {
+  margin: 8px 0 14px;
+  color: #20302c;
+  font-size: 17px;
+}
+
+@media (max-width: 480px) {
+  .details-list {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .details-list dd {
+    margin-bottom: 10px;
+  }
+}

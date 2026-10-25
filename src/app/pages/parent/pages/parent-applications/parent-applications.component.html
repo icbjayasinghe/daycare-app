@@ -1,1 +1,153 @@
-<p>parent-applications works!</p>
+<main class="applications-page">
+  <header class="page-header">
+    <p class="eyebrow">PARENT PORTAL</p>
+    <h1>Your applications</h1>
+    <p>Review your daycare applications and enrollment responses.</p>
+  </header>
+
+  <mat-tab-group aria-label="Parent applications and responses">
+    <mat-tab label="Applications">
+      <button
+        *ngIf="applicationsError"
+        type="button"
+        class="retry-button"
+        (click)="loadApplications()"
+      >
+        Retry
+      </button>
+      <p *ngIf="applicationsLoading" class="state-message" role="status">
+        Loading applications...
+      </p>
+      <p
+        *ngIf="applicationsError"
+        class="state-message error-message"
+        role="alert"
+      >
+        {{ applicationsError }}
+      </p>
+      <p
+        *ngIf="!applicationsLoading && !applicationsError && applications.length === 0"
+        class="state-message"
+      >
+        You have not applied to any daycares yet.
+      </p>
+      <div
+        *ngIf="!applicationsLoading && !applicationsError && applications.length > 0"
+        class="table-container"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Daycare</th>
+              <th scope="col">Child</th>
+              <th scope="col">Applied</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let application of applications">
+              <th scope="row">{{ application.dayCare.name }}</th>
+              <td>
+                {{ application.child.firstName }} {{ application.child.lastName }}
+              </td>
+              <td>
+                {{
+                  application.appliedAt
+                    ? (application.appliedAt | date: "mediumDate")
+                    : "—"
+                }}
+              </td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(application.status)"
+                >
+                  {{ application.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Response Received">
+      <button
+        *ngIf="enrollmentsError"
+        type="button"
+        class="retry-button"
+        (click)="loadEnrollments()"
+      >
+        Retry
+      </button>
+      <p *ngIf="enrollmentsLoading" class="state-message" role="status">
+        Loading enrollments...
+      </p>
+      <p
+        *ngIf="enrollmentsError"
+        class="state-message error-message"
+        role="alert"
+      >
+        {{ enrollmentsError }}
+      </p>
+      <p
+        *ngIf="!enrollmentsLoading && !enrollmentsError && enrollments.length === 0"
+        class="state-message"
+      >
+        No daycare enrollments have been received yet.
+      </p>
+      <div
+        *ngIf="!enrollmentsLoading && !enrollmentsError && enrollments.length > 0"
+        class="table-container"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Daycare</th>
+              <th scope="col">Child</th>
+              <th scope="col">Enrollment date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Schedule</th>
+              <th scope="col">Inquire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enrollment of enrollments">
+              <th scope="row">{{ enrollment.daycare?.name || "—" }}</th>
+              <td>
+                {{ enrollment.child?.firstName || "" }}
+                {{ enrollment.child?.lastName || "" }}
+              </td>
+              <td>
+                {{
+                  enrollment.enrollmentDate
+                    ? (enrollment.enrollmentDate | date: "mediumDate")
+                    : "—"
+                }}
+              </td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="getStatusClass(enrollment.status)"
+                >
+                  {{ enrollment.status }}
+                </span>
+              </td>
+              <td>{{ enrollment.schedule || "—" }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="inquire-button"
+                  (click)="viewEnrollment(enrollment)"
+                  [attr.aria-label]="'View enrollment details for ' + (enrollment.daycare?.name || 'daycare')"
+                >
+                  View details
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</main>

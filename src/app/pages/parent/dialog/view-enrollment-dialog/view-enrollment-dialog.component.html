@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Enrollment details</h2>
+
+<mat-dialog-content>
+  <section aria-labelledby="enrollment-details-heading">
+    <h3 id="enrollment-details-heading">Enrollment</h3>
+    <dl class="details-list">
+      <dt>Child</dt>
+      <dd>
+        {{ enrollment.child?.firstName || "—" }}
+        {{ enrollment.child?.lastName || "" }}
+      </dd>
+      <dt>Status</dt>
+      <dd>{{ enrollment.status }}</dd>
+      <dt>Enrollment date</dt>
+      <dd>
+        {{
+          enrollment.enrollmentDate
+            ? (enrollment.enrollmentDate | date: "mediumDate")
+            : "—"
+        }}
+      </dd>
+      <dt>End date</dt>
+      <dd>
+        {{
+          enrollment.endDate
+            ? (enrollment.endDate | date: "mediumDate")
+            : "—"
+        }}
+      </dd>
+      <dt>Schedule</dt>
+      <dd>{{ enrollment.schedule || "—" }}</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="daycare-details-heading">
+    <h3 id="daycare-details-heading">Daycare details</h3>
+    <dl class="details-list">
+      <dt>Name</dt>
+      <dd>{{ enrollment.daycare?.name || "—" }}</dd>
+      <dt>Address</dt>
+      <dd>{{ daycareAddress }}</dd>
+      <dt>Telephone</dt>
+      <dd>{{ enrollment.daycare?.telephone || "Not provided" }}</dd>
+      <dt>Website</dt>
+      <dd>{{ enrollment.daycare?.website || "Not provided" }}</dd>
+    </dl>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Close</button>
+</mat-dialog-actions>
