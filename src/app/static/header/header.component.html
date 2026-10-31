@@ -12,6 +12,9 @@
         *ngIf="authService.authenticated$ | async; else membershipMenu"
       >
         <span class="account-area">
+          <mat-icon class="notification-icon" aria-label="Notifications">
+            notifications
+          </mat-icon>
           <button
             mat-icon-button
             class="avatar-button"

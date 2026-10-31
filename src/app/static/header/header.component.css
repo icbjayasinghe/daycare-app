@@ -86,6 +86,11 @@ section {
   white-space: nowrap;
 }
 
+.notification-icon {
+  margin-right: 12px;
+  color: #52665c;
+}
+
 .account-name {
   font-weight: 500;
 }
