@@ -16,4 +16,72 @@
       <span aria-hidden="true">+</span>
     </button>
   </header>
+
+  <button
+    *ngIf="errorMessage"
+    type="button"
+    class="retry-button"
+    (click)="loadFeePlans()"
+  >
+    Retry
+  </button>
+
+  <p *ngIf="loading" class="state-message" role="status">
+    Loading fee plans...
+  </p>
+  <p *ngIf="errorMessage" class="state-message error-message" role="alert">
+    {{ errorMessage }}
+  </p>
+  <p
+    *ngIf="!loading && !errorMessage && feePlans.length === 0"
+    class="state-message"
+  >
+    There are no active fee plans for your daycare.
+  </p>
+
+  <div
+    *ngIf="!loading && !errorMessage && feePlans.length > 0"
+    class="table-container"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Monthly fee</th>
+          <th scope="col">Effective from</th>
+          <th scope="col">Effective to</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let feePlan of feePlans">
+          <th scope="row">{{ feePlan.name || "—" }}</th>
+          <td>{{ feePlan.description || "—" }}</td>
+          <td>
+            {{
+              feePlan.monthlyFee !== undefined
+                ? (feePlan.monthlyFee | currency)
+                : "—"
+            }}
+          </td>
+          <td>
+            {{
+              feePlan.effectiveFrom
+                ? (feePlan.effectiveFrom | date: "mediumDate")
+                : "—"
+            }}
+          </td>
+          <td>
+            {{
+              feePlan.effectiveTo
+                ? (feePlan.effectiveTo | date: "mediumDate")
+                : "—"
+            }}
+          </td>
+          <td>{{ feePlan.active ? "Active" : "Inactive" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </main>

@@ -16,4 +16,10 @@ export class PaymentService {
 
     return this.http.post<FeePlanDto>(url, feePlan, { headers });
   }
+
+  getMyFeePlans(daycareId: number, active: boolean): Observable<FeePlanDto[]> {
+    return this.http.get<FeePlanDto[]>(
+      `${environment.baseUrl}/api/fee-plans?daycareId=${daycareId}&active=${active}`,
+    );
+  }
 }
