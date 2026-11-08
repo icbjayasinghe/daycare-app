@@ -1,0 +1,62 @@
+.fee-plan-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #2e7d32;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+}
+
+.page-description {
+  margin: 8px 0 0;
+  color: #6b7280;
+}
+
+.add-fee-plan-button {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #2e7d32;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+  transition: background-color 0.2s;
+}
+
+.add-fee-plan-button:hover {
+  background: #256629;
+}
+
+.add-fee-plan-button:focus-visible {
+  outline: 3px solid #a5d6a7;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .fee-plan-page {
+    padding: 24px 16px;
+  }
+}

@@ -24,6 +24,22 @@
       <span>Current Students</span>
     </a>
 
+    <details class="nav-group">
+      <summary>
+        <span class="icon">💳</span>
+        <span>Payment</span>
+        <span class="nav-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <a
+        class="subnav-item"
+        routerLink="/pages/daycare/fee-plan"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Fee Plan
+      </a>
+    </details>
+
     <a routerLink="/pages/daycare/profile" routerLinkActive="active">
       <span class="icon">👤</span>
       <span>Daycare Profile</span>

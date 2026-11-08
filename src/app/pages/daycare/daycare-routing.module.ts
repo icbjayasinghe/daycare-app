@@ -6,6 +6,7 @@ import { DaycareProfileComponent } from './pages/daycare-profile/daycare-profile
 import AuthGuard from 'src/app/guards/auth.guard';
 import { WaitListComponent } from './pages/wait-list/wait-list.component';
 import { CurrentStudentComponent } from './pages/current-student/current-student.component';
+import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,12 @@ const routes: Routes = [
       {
         path: 'current-students',
         component: CurrentStudentComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'fee-plan',
+        component: FeePlanComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },

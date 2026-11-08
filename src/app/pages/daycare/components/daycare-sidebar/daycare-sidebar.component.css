@@ -57,6 +57,59 @@
   transition: 0.2s;
 }
 
+.nav-group summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  color: #4b5563;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+  transition: 0.2s;
+}
+
+.nav-chevron {
+  margin-left: auto;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.nav-group[open] .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-group summary:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.subnav-item {
+  display: block;
+  margin: 4px 0 0 36px;
+  padding: 10px 14px;
+  color: #6b7280;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.sidebar-nav a.subnav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.sidebar-nav a.subnav-item.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
 .sidebar-nav a:hover {
   background: #f3f4f6;
   color: #111827;

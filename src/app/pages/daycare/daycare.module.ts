@@ -11,6 +11,8 @@ import { WaitListComponent } from './pages/wait-list/wait-list.component';
 import { ChildProfileComponent } from './dialog/child-profile/child-profile.component';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { CurrentStudentComponent } from './pages/current-student/current-student.component';
+import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
+import { AddFeePlanComponent } from './dialog/add-fee-plan/add-fee-plan.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { CurrentStudentComponent } from './pages/current-student/current-student
     WaitListComponent,
     ChildProfileComponent,
     CurrentStudentComponent,
+    FeePlanComponent,
+    AddFeePlanComponent,
   ],
   imports: [
     CommonModule,
