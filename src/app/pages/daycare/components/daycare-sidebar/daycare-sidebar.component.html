@@ -9,17 +9,18 @@
       routerLink="/pages/daycare/dashboard"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
+      (click)="navigate.emit()"
     >
       <span class="icon">🏠</span>
       <span>Dashboard</span>
     </a>
 
-    <a routerLink="/pages/daycare/waiting-list" routerLinkActive="active">
+    <a routerLink="/pages/daycare/waiting-list" routerLinkActive="active" (click)="navigate.emit()">
       <span class="icon">🏫</span>
       <span>Wait List</span>
     </a>
 
-    <a routerLink="/pages/daycare/current-students" routerLinkActive="active">
+    <a routerLink="/pages/daycare/current-students" routerLinkActive="active" (click)="navigate.emit()">
       <span class="icon">👧</span>
       <span>Current Students</span>
     </a>
@@ -35,12 +36,13 @@
         routerLink="/pages/daycare/fee-plan"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
+        (click)="navigate.emit()"
       >
         Fee Plan
       </a>
     </details>
 
-    <a routerLink="/pages/daycare/profile" routerLinkActive="active">
+    <a routerLink="/pages/daycare/profile" routerLinkActive="active" (click)="navigate.emit()">
       <span class="icon">👤</span>
       <span>Daycare Profile</span>
     </a>
