@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span>
+  <span *ngIf="!(authService.authenticated$ | async)">
     <img src="assets/img/skyhigh-tec.png" alt="Logo" class="logo-img" />
   </span>
 

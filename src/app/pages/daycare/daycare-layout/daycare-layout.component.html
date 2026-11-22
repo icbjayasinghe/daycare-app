@@ -1,5 +1,30 @@
-<app-daycare-sidebar></app-daycare-sidebar>
+<button
+  type="button"
+  class="menu-toggle"
+  [class.sidebar-open]="sidebarOpen"
+  (click)="toggleSidebar()"
+  [attr.aria-expanded]="sidebarOpen"
+  aria-label="Toggle daycare sidebar"
+>
+  <mat-icon>{{ sidebarOpen ? 'close' : 'menu' }}</mat-icon>
+</button>
 
-<main class="daycare-content">
-	<router-outlet></router-outlet>
+<button
+  type="button"
+  class="sidebar-backdrop"
+  [class.visible]="sidebarOpen"
+  (click)="closeSidebar()"
+  aria-label="Close daycare sidebar"
+  tabindex="-1"
+></button>
+
+<div class="sidebar-shell" [class.closed]="!sidebarOpen">
+  <app-daycare-sidebar
+    [collapsed]="!sidebarOpen"
+    (navigate)="closeSidebarOnMobile()"
+  ></app-daycare-sidebar>
+</div>
+
+<main class="daycare-content" [class.sidebar-collapsed]="!sidebarOpen">
+  <router-outlet></router-outlet>
 </main>
