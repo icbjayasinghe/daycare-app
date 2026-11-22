@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DaycareAddress, DaycareProfile } from 'src/app/models/daycare.model';
 import { DaycareService } from 'src/app/services/daycare.service';
+import { DaycareConfigComponent } from '../../dialog/daycare-config/daycare-config.component';
 
 @Component({
   selector: 'app-daycare-profile',
@@ -25,6 +27,7 @@ export class DaycareProfileComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly daycareService: DaycareService,
     private readonly sanitizer: DomSanitizer,
+    private readonly dialog: MatDialog,
   ) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
@@ -75,6 +78,14 @@ export class DaycareProfileComponent implements OnInit {
     this.errorMessage = '';
     this.isEditing = true;
     this.updateMapUrl();
+  }
+
+  openDaycareConfig(): void {
+    this.dialog.open(DaycareConfigComponent, {
+      width: 'min(560px, 94vw)',
+      maxHeight: '90vh',
+      data: this.profile,
+    });
   }
 
   cancelEditing(): void {

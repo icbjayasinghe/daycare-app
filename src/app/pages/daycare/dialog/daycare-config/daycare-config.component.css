@@ -1,0 +1,93 @@
+:host {
+  display: block;
+}
+
+.dialog-content {
+  min-width: 320px;
+  color: #52665c;
+}
+
+.dialog-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #52665c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-field input {
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid #cbd8d1;
+  border-radius: 4px;
+  background: #fff;
+  color: #20302c;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.form-field input[readonly] {
+  border-color: transparent;
+  background: #f1f5f2;
+}
+
+.payment-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #30443b;
+  font-weight: 600;
+}
+
+.payment-field input {
+  width: 18px;
+  height: 18px;
+  cursor: not-allowed;
+}
+
+.approval-note {
+  margin: -10px 0 0 26px;
+  color: #718079;
+  font-size: 13px;
+}
+
+.field-error,
+.error-message {
+  color: #a33e38;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.success-message {
+  color: #24664f;
+  font-size: 13px;
+}
+
+.dialog-content p {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .dialog-content {
+    min-width: 0;
+  }
+
+  .field-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

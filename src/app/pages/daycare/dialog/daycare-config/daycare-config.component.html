@@ -1,0 +1,38 @@
+
+<h2 mat-dialog-title>Daycare configuration</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p *ngIf="loading" role="status">Loading daycare configuration...</p>
+
+  <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="save()">
+    <div class="field-grid">
+      <label class="form-field">
+        <span>Total capacity</span>
+        <input type="number" formControlName="totalCapacity" min="1" [readonly]="!isEditing" />
+      </label>
+      <label class="form-field">
+        <span>Hourly charge</span>
+        <input type="number" formControlName="hourlyCharge" min="0" [readonly]="!isEditing" />
+      </label>
+    </div>
+
+    <label class="payment-field">
+      <input type="checkbox" formControlName="paymentsEnabled" />
+      <span>Payment module enabled</span>
+    </label>
+    <p class="approval-note"><strong>Need admin approval for enable</strong></p>
+    <p *ngIf="errorMessage" class="error-message" role="alert">{{ errorMessage }}</p>
+    <p *ngIf="successMessage" class="success-message" role="status">{{ successMessage }}</p>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button type="button" mat-button (click)="close()" [disabled]="saving">Close</button>
+  <button *ngIf="configuration && !isEditing" type="button" mat-stroked-button color="primary" (click)="startEditing()">Edit</button>
+  <button *ngIf="isEditing" type="button" mat-button [disabled]="saving" (click)="configuration ? cancelEditing() : close()">
+    {{ configuration ? "Cancel" : "Close" }}
+  </button>
+  <button *ngIf="isEditing" type="submit" mat-flat-button color="primary" [disabled]="saving" (click)="save()">
+    {{ saving ? "Saving..." : configuration ? "Save changes" : "Add configuration" }}
+  </button>
+</mat-dialog-actions>

@@ -13,6 +13,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { CurrentStudentComponent } from './pages/current-student/current-student.component';
 import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
 import { AddFeePlanComponent } from './dialog/add-fee-plan/add-fee-plan.component';
+import { DaycareConfigComponent } from './dialog/daycare-config/daycare-config.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AddFeePlanComponent } from './dialog/add-fee-plan/add-fee-plan.componen
     CurrentStudentComponent,
     FeePlanComponent,
     AddFeePlanComponent,
+    DaycareConfigComponent,
   ],
   imports: [
     CommonModule,

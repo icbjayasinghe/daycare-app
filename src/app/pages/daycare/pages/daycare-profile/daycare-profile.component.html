@@ -9,6 +9,13 @@
     </div>
     <div class="header-actions" *ngIf="!loading && profile">
       <button
+        type="button"
+        class="button button-secondary"
+        (click)="openDaycareConfig()"
+      >
+        Daycare configuration
+      </button>
+      <button
         *ngIf="!isEditing"
         type="button"
         class="button button-primary"
