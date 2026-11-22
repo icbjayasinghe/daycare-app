@@ -1,7 +1,11 @@
 <aside class="daycare-sidebar">
   <div class="sidebar-header">
-    <h2>TipToe</h2>
-    <span>Daycare Portal</span>
+    <img
+      src="assets/img/skyhigh-tec-sidebar-logo.png"
+      alt="SkyHigh"
+      class="sidebar-logo"
+    />
+    <span class="sidebar-subtitle">Daycare Portal</span>
   </div>
 
   <nav class="sidebar-nav">
@@ -15,12 +19,20 @@
       <span>Dashboard</span>
     </a>
 
-    <a routerLink="/pages/daycare/waiting-list" routerLinkActive="active" (click)="navigate.emit()">
+    <a
+      routerLink="/pages/daycare/waiting-list"
+      routerLinkActive="active"
+      (click)="navigate.emit()"
+    >
       <span class="icon">🏫</span>
       <span>Wait List</span>
     </a>
 
-    <a routerLink="/pages/daycare/current-students" routerLinkActive="active" (click)="navigate.emit()">
+    <a
+      routerLink="/pages/daycare/current-students"
+      routerLinkActive="active"
+      (click)="navigate.emit()"
+    >
       <span class="icon">👧</span>
       <span>Current Students</span>
     </a>
@@ -42,7 +54,11 @@
       </a>
     </details>
 
-    <a routerLink="/pages/daycare/profile" routerLinkActive="active" (click)="navigate.emit()">
+    <a
+      routerLink="/pages/daycare/profile"
+      routerLinkActive="active"
+      (click)="navigate.emit()"
+    >
       <span class="icon">👤</span>
       <span>Daycare Profile</span>
     </a>
