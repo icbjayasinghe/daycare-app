@@ -14,6 +14,7 @@ import { CurrentStudentComponent } from './pages/current-student/current-student
 import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
 import { AddFeePlanComponent } from './dialog/add-fee-plan/add-fee-plan.component';
 import { DaycareConfigComponent } from './dialog/daycare-config/daycare-config.component';
+import { FundingProgramsComponent } from './pages/funding-programs/funding-programs.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DaycareConfigComponent } from './dialog/daycare-config/daycare-config.c
     FeePlanComponent,
     AddFeePlanComponent,
     DaycareConfigComponent,
+    FundingProgramsComponent,
   ],
   imports: [
     CommonModule,

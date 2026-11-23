@@ -7,6 +7,7 @@ import AuthGuard from 'src/app/guards/auth.guard';
 import { WaitListComponent } from './pages/wait-list/wait-list.component';
 import { CurrentStudentComponent } from './pages/current-student/current-student.component';
 import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
+import { FundingProgramsComponent } from './pages/funding-programs/funding-programs.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,12 @@ const routes: Routes = [
       {
         path: 'fee-plan',
         component: FeePlanComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'funding-programs',
+        component: FundingProgramsComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },

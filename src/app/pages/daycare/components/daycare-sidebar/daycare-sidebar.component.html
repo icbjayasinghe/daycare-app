@@ -52,6 +52,15 @@
       >
         Fee Plan
       </a>
+      <a
+        class="subnav-item"
+        routerLink="/pages/daycare/funding-programs"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="navigate.emit()"
+      >
+        Funding Programs
+      </a>
     </details>
 
     <a
