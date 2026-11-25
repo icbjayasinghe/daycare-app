@@ -13,6 +13,9 @@
   <p *ngIf="validationMessage" class="validation-message" role="alert">
     {{ validationMessage }}
   </p>
+  <p *ngIf="statusMessage" class="status-message" role="status">
+    {{ statusMessage }}
+  </p>
 
   <div class="invoice-workspace">
     <section class="invoice-editor" aria-labelledby="invoice-details-heading">
@@ -24,7 +27,7 @@
           type="text"
           name="invoiceNumber"
           [(ngModel)]="invoiceNumber"
-          (ngModelChange)="validationMessage = ''"
+          (ngModelChange)="clearMessages()"
           placeholder="Enter invoice number"
         />
       </label>
@@ -35,7 +38,7 @@
           type="date"
           name="invoiceDate"
           [(ngModel)]="invoiceDate"
-          (ngModelChange)="validationMessage = ''"
+          (ngModelChange)="clearMessages()"
         />
       </label>
 
@@ -46,7 +49,7 @@
             type="date"
             name="billingPeriodStart"
             [(ngModel)]="billingPeriodStart"
-            (ngModelChange)="validationMessage = ''"
+            (ngModelChange)="clearMessages()"
           />
         </label>
         <label class="form-field">
@@ -55,7 +58,7 @@
             type="date"
             name="billingPeriodEnd"
             [(ngModel)]="billingPeriodEnd"
-            (ngModelChange)="validationMessage = ''"
+            (ngModelChange)="clearMessages()"
           />
         </label>
       </div>
@@ -66,7 +69,7 @@
           type="text"
           name="childName"
           [(ngModel)]="childName"
-          (ngModelChange)="validationMessage = ''"
+          (ngModelChange)="clearMessages()"
           placeholder="Enter child's full name"
         />
       </label>
@@ -77,7 +80,7 @@
           type="text"
           name="parentName"
           [(ngModel)]="parentName"
-          (ngModelChange)="validationMessage = ''"
+          (ngModelChange)="clearMessages()"
           placeholder="Enter parent's full name"
         />
       </label>
@@ -99,7 +102,7 @@
             type="text"
             [name]="'chargeDescription' + index"
             [(ngModel)]="charge.description"
-            (ngModelChange)="validationMessage = ''"
+            (ngModelChange)="clearMessages()"
             placeholder="e.g. Late pickup"
           />
         </label>
@@ -109,7 +112,7 @@
             type="number"
             [name]="'chargeAmount' + index"
             [(ngModel)]="charge.amount"
-            (ngModelChange)="validationMessage = ''"
+            (ngModelChange)="clearMessages()"
             min="0.01"
             step="0.01"
             placeholder="0.00"
@@ -129,9 +132,14 @@
     <section class="invoice-preview" aria-labelledby="invoice-preview-heading">
       <div class="preview-toolbar">
         <h2 id="invoice-preview-heading">Invoice preview</h2>
-        <button type="button" class="download-button" (click)="downloadPdf()">
-          Download PDF
-        </button>
+        <div class="invoice-actions">
+          <button type="button" class="send-email-button" (click)="sendAsEmail()">
+            Send as Email
+          </button>
+          <button type="button" class="download-button" (click)="downloadPdf()">
+            Download PDF
+          </button>
+        </div>
       </div>
 
       <article class="invoice-paper">

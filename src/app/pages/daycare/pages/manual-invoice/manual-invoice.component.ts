@@ -20,6 +20,7 @@ export class ManualInvoiceComponent {
   billingPeriodStart = '';
   billingPeriodEnd = '';
   validationMessage = '';
+  statusMessage = '';
 
   get invoiceTotal(): number {
     return this.charges.reduce(
@@ -36,7 +37,61 @@ export class ManualInvoiceComponent {
     this.charges.splice(index, 1);
   }
 
+  clearMessages(): void {
+    this.validationMessage = '';
+    this.statusMessage = '';
+  }
+
   downloadPdf(): void {
+    const charges = this.validateInvoice();
+    if (!charges) {
+      return;
+    }
+
+    this.createPdf(charges).save(this.pdfFileName);
+  }
+
+  async sendAsEmail(): Promise<void> {
+    const charges = this.validateInvoice();
+    if (!charges) {
+      return;
+    }
+
+    const pdf = this.createPdf(charges);
+    const file = new File([pdf.output('blob')], this.pdfFileName, {
+      type: 'application/pdf',
+    });
+
+    if (
+      typeof navigator.share !== 'function' ||
+      typeof navigator.canShare !== 'function' ||
+      !navigator.canShare({ files: [file] })
+    ) {
+      pdf.save(this.pdfFileName);
+      this.statusMessage =
+        'This browser cannot share PDF attachments. The invoice was downloaded; attach it to an email manually.';
+      return;
+    }
+
+    try {
+      await navigator.share({
+        files: [file],
+        title: `Invoice ${this.invoiceNumber.trim()}`,
+        text: `Invoice for ${this.childName.trim()}`,
+      });
+      this.statusMessage = 'Invoice shared.';
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+
+      this.validationMessage =
+        'Could not open the share sheet. Download the invoice and attach it to an email manually.';
+    }
+  }
+
+  private validateInvoice(): Array<Charge & { amount: number }> | null {
+    this.clearMessages();
     const enteredCharges = this.charges.filter(
       (charge) => charge.description.trim() || charge.amount !== null,
     );
@@ -49,7 +104,7 @@ export class ManualInvoiceComponent {
 
     if (!this.childName.trim() || !this.parentName.trim()) {
       this.validationMessage = 'Enter both the child and parent names.';
-      return;
+      return null;
     }
 
     if (
@@ -60,13 +115,13 @@ export class ManualInvoiceComponent {
     ) {
       this.validationMessage =
         'Enter the invoice number, invoice date, and billing period.';
-      return;
+      return null;
     }
 
     if (this.billingPeriodStart > this.billingPeriodEnd) {
       this.validationMessage =
         'The billing period end date must be on or after the start date.';
-      return;
+      return null;
     }
 
     if (
@@ -75,14 +130,13 @@ export class ManualInvoiceComponent {
     ) {
       this.validationMessage =
         'Add a description and a positive amount for each charge.';
-      return;
+      return null;
     }
 
-    this.validationMessage = '';
-    this.createPdf(validCharges);
+    return validCharges;
   }
 
-  private createPdf(charges: Array<Charge & { amount: number }>): void {
+  private createPdf(charges: Array<Charge & { amount: number }>): jsPDF {
     const pdf = new jsPDF({ format: 'a4', unit: 'mm' });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -182,9 +236,13 @@ export class ManualInvoiceComponent {
     pdf.setTextColor(107, 114, 128);
     pdf.text('Thank you.', 15, pageHeight - 15);
 
+    return pdf;
+  }
+
+  private get pdfFileName(): string {
     const safeInvoiceNumber = this.invoiceNumber
       .trim()
       .replace(/[^a-z0-9]+/gi, '-');
-    pdf.save(`invoice-${safeInvoiceNumber}.pdf`);
+    return `invoice-${safeInvoiceNumber}.pdf`;
   }
 }

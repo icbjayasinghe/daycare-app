@@ -32,6 +32,11 @@ h1 {
   color: #b91c1c;
 }
 
+.status-message {
+  margin: 0 0 20px;
+  color: #2e7d32;
+}
+
 .invoice-workspace {
   display: grid;
   grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
@@ -89,7 +94,8 @@ h1 {
 }
 
 .charges-heading,
-.preview-toolbar {
+.preview-toolbar,
+.invoice-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -142,11 +148,28 @@ h1 {
   font-weight: 600;
 }
 
+.send-email-button {
+  padding: 10px 14px;
+  border: 1px solid #2e7d32;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #2e7d32;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .download-button:hover {
   background: #256629;
 }
 
+.send-email-button:hover {
+  background: #f0fdf4;
+}
+
 .download-button:focus-visible,
+.send-email-button:focus-visible,
 .add-charge-button:focus-visible,
 .remove-charge-button:focus-visible {
   outline: 3px solid #a5d6a7;
