@@ -1,0 +1,201 @@
+<main class="manual-invoice-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">DAYCARE MANAGEMENT</p>
+      <h1>Manual Invoice Generation</h1>
+      <p class="page-description">
+        Enter the billing details and charges, then download the invoice as a
+        PDF.
+      </p>
+    </div>
+  </header>
+
+  <p *ngIf="validationMessage" class="validation-message" role="alert">
+    {{ validationMessage }}
+  </p>
+
+  <div class="invoice-workspace">
+    <section class="invoice-editor" aria-labelledby="invoice-details-heading">
+      <h2 id="invoice-details-heading">Invoice details</h2>
+
+      <label class="form-field">
+        <span>Invoice number</span>
+        <input
+          type="text"
+          name="invoiceNumber"
+          [(ngModel)]="invoiceNumber"
+          (ngModelChange)="validationMessage = ''"
+          placeholder="Enter invoice number"
+        />
+      </label>
+
+      <label class="form-field">
+        <span>Invoice date</span>
+        <input
+          type="date"
+          name="invoiceDate"
+          [(ngModel)]="invoiceDate"
+          (ngModelChange)="validationMessage = ''"
+        />
+      </label>
+
+      <div class="billing-period-fields">
+        <label class="form-field">
+          <span>Period start</span>
+          <input
+            type="date"
+            name="billingPeriodStart"
+            [(ngModel)]="billingPeriodStart"
+            (ngModelChange)="validationMessage = ''"
+          />
+        </label>
+        <label class="form-field">
+          <span>Period end</span>
+          <input
+            type="date"
+            name="billingPeriodEnd"
+            [(ngModel)]="billingPeriodEnd"
+            (ngModelChange)="validationMessage = ''"
+          />
+        </label>
+      </div>
+
+      <label class="form-field">
+        <span>Child name</span>
+        <input
+          type="text"
+          name="childName"
+          [(ngModel)]="childName"
+          (ngModelChange)="validationMessage = ''"
+          placeholder="Enter child's full name"
+        />
+      </label>
+
+      <label class="form-field">
+        <span>Parent name</span>
+        <input
+          type="text"
+          name="parentName"
+          [(ngModel)]="parentName"
+          (ngModelChange)="validationMessage = ''"
+          placeholder="Enter parent's full name"
+        />
+      </label>
+
+      <div class="charges-heading">
+        <h3>Charges</h3>
+        <button type="button" class="add-charge-button" (click)="addCharge()">
+          Add charge
+        </button>
+      </div>
+
+      <div
+        class="charge-fields"
+        *ngFor="let charge of charges; let index = index"
+      >
+        <label class="form-field">
+          <span>Charge description</span>
+          <input
+            type="text"
+            [name]="'chargeDescription' + index"
+            [(ngModel)]="charge.description"
+            (ngModelChange)="validationMessage = ''"
+            placeholder="e.g. Late pickup"
+          />
+        </label>
+        <label class="form-field">
+          <span>Amount</span>
+          <input
+            type="number"
+            [name]="'chargeAmount' + index"
+            [(ngModel)]="charge.amount"
+            (ngModelChange)="validationMessage = ''"
+            min="0.01"
+            step="0.01"
+            placeholder="0.00"
+          />
+        </label>
+        <button
+          type="button"
+          class="remove-charge-button"
+          (click)="removeCharge(index)"
+          [attr.aria-label]="'Remove charge ' + (index + 1)"
+        >
+          Remove
+        </button>
+      </div>
+    </section>
+
+    <section class="invoice-preview" aria-labelledby="invoice-preview-heading">
+      <div class="preview-toolbar">
+        <h2 id="invoice-preview-heading">Invoice preview</h2>
+        <button type="button" class="download-button" (click)="downloadPdf()">
+          Download PDF
+        </button>
+      </div>
+
+      <article class="invoice-paper">
+        <header class="invoice-heading">
+          <div class="brand">
+            <img src="assets/img/skyhigh-tec-sidebar-logo.png" alt="SkyHigh" />
+            <span>Daycare Portal</span>
+          </div>
+          <div class="invoice-meta">
+            <h3>INVOICE</h3>
+            <p>{{ invoiceNumber || "Invoice number" }}</p>
+            <p>
+              Invoice date:
+              {{ invoiceDate ? (invoiceDate | date: "mediumDate":"UTC") : "—" }}
+            </p>
+            <p>
+              Period:
+              {{
+                billingPeriodStart
+                  ? (billingPeriodStart | date: "mediumDate":"UTC")
+                  : "Start"
+              }}
+              –
+              {{
+                billingPeriodEnd
+                  ? (billingPeriodEnd | date: "mediumDate":"UTC")
+                  : "End"
+              }}
+            </p>
+          </div>
+        </header>
+
+        <section class="bill-to">
+          <h4>Bill to</h4>
+          <p><strong>Child:</strong> {{ childName || "Child name" }}</p>
+          <p><strong>Parent:</strong> {{ parentName || "Parent name" }}</p>
+        </section>
+
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th scope="col">Charges</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let charge of charges">
+              <td>{{ charge.description || "Charge description" }}</td>
+              <td>{{ charge.amount ?? 0 | currency }}</td>
+            </tr>
+            <tr *ngIf="charges.length === 0">
+              <td colspan="2" class="empty-charge">No charges added.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">Total</th>
+              <td>{{ invoiceTotal | currency }}</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <p class="invoice-thanks">Thank you.</p>
+      </article>
+    </section>
+  </div>
+</main>

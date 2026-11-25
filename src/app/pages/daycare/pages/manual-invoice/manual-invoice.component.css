@@ -1,0 +1,286 @@
+.manual-invoice-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #2e7d32;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+}
+
+.page-description {
+  margin: 8px 0 0;
+  color: #6b7280;
+}
+
+.validation-message {
+  margin: 0 0 20px;
+  color: #b91c1c;
+}
+
+.invoice-workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.invoice-editor,
+.invoice-preview {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.invoice-editor h2,
+.preview-toolbar h2 {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 18px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #111827;
+  font: inherit;
+  font-weight: 400;
+}
+
+.form-field input:focus {
+  border-color: #2e7d32;
+  outline: 2px solid #a5d6a7;
+  outline-offset: 1px;
+}
+
+.billing-period-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.charges-heading,
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.charges-heading {
+  margin-top: 28px;
+}
+
+.charges-heading h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+}
+
+.add-charge-button,
+.remove-charge-button {
+  border: 0;
+  background: transparent;
+  color: #2e7d32;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.charge-fields {
+  position: relative;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.remove-charge-button {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  color: #b91c1c;
+}
+
+.download-button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #2e7d32;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.download-button:hover {
+  background: #256629;
+}
+
+.download-button:focus-visible,
+.add-charge-button:focus-visible,
+.remove-charge-button:focus-visible {
+  outline: 3px solid #a5d6a7;
+  outline-offset: 2px;
+}
+
+.invoice-paper {
+  min-height: 470px;
+  margin-top: 20px;
+  padding: 32px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 16px rgba(17, 24, 39, 0.08);
+  color: #374151;
+}
+
+.invoice-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.brand img {
+  width: min(190px, 100%);
+  height: 48px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.invoice-meta {
+  text-align: right;
+}
+
+.invoice-meta h3 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 24px;
+}
+
+.invoice-meta p,
+.bill-to p {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.bill-to {
+  margin: 24px 0;
+}
+
+.bill-to h4 {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.invoice-table th,
+.invoice-table td {
+  padding: 11px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.invoice-table th:last-child,
+.invoice-table td:last-child {
+  text-align: right;
+}
+
+.invoice-table thead th {
+  background: #f9fafb;
+  color: #374151;
+}
+
+.invoice-table tfoot th,
+.invoice-table tfoot td {
+  border-bottom: 0;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.empty-charge {
+  color: #9ca3af;
+  text-align: center !important;
+}
+
+.invoice-thanks {
+  margin-top: 36px;
+  color: #6b7280;
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .invoice-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .manual-invoice-page {
+    padding: 24px 16px;
+  }
+
+  .invoice-editor,
+  .invoice-preview {
+    padding: 18px;
+  }
+
+  .invoice-paper {
+    padding: 20px 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .billing-period-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

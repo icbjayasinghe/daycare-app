@@ -8,6 +8,8 @@ import { WaitListComponent } from './pages/wait-list/wait-list.component';
 import { CurrentStudentComponent } from './pages/current-student/current-student.component';
 import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
 import { FundingProgramsComponent } from './pages/funding-programs/funding-programs.component';
+import { ManualInvoiceComponent } from './pages/manual-invoice/manual-invoice.component';
+import { AutoInvoiceComponent } from './pages/auto-invoice/auto-invoice.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,18 @@ const routes: Routes = [
       {
         path: 'funding-programs',
         component: FundingProgramsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'manual-invoice',
+        component: ManualInvoiceComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['PROVIDER'] },
+      },
+      {
+        path: 'auto-invoice',
+        component: AutoInvoiceComponent,
         canActivate: [AuthGuard],
         data: { roles: ['PROVIDER'] },
       },

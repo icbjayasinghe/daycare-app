@@ -63,6 +63,32 @@
       </a>
     </details>
 
+    <details class="nav-group">
+      <summary>
+        <span class="icon">🧾</span>
+        <span>Invoice Generation</span>
+        <span class="nav-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <a
+        class="subnav-item"
+        routerLink="/pages/daycare/manual-invoice"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="navigate.emit()"
+      >
+        Manual Invoice Generation
+      </a>
+      <a
+        class="subnav-item"
+        routerLink="/pages/daycare/auto-invoice"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="navigate.emit()"
+      >
+        Automatic Invoice Generation
+      </a>
+    </details>
+
     <a
       routerLink="/pages/daycare/profile"
       routerLinkActive="active"

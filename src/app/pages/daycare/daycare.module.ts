@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DaycareRoutingModule } from './daycare-routing.module';
 import { DaycareSidebarComponent } from './components/daycare-sidebar/daycare-sidebar.component';
@@ -15,6 +15,8 @@ import { FeePlanComponent } from './pages/fee-plan/fee-plan.component';
 import { AddFeePlanComponent } from './dialog/add-fee-plan/add-fee-plan.component';
 import { DaycareConfigComponent } from './dialog/daycare-config/daycare-config.component';
 import { FundingProgramsComponent } from './pages/funding-programs/funding-programs.component';
+import { ManualInvoiceComponent } from './pages/manual-invoice/manual-invoice.component';
+import { AutoInvoiceComponent } from './pages/auto-invoice/auto-invoice.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +31,12 @@ import { FundingProgramsComponent } from './pages/funding-programs/funding-progr
     AddFeePlanComponent,
     DaycareConfigComponent,
     FundingProgramsComponent,
+    ManualInvoiceComponent,
+    AutoInvoiceComponent,
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     DaycareRoutingModule,
     MaterialModule,
